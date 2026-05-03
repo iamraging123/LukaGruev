@@ -1,0 +1,16 @@
+# OS
+Thumbs.db
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Unused source media — not referenced by the site, ~150 MB of extras.
+# If you later embed a clip, force-add it: `git add -f assets/.../foo.mp4`
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.HEIC
+*.heic

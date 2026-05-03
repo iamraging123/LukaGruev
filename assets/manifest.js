@@ -1,0 +1,141 @@
+window.IMAGE_MANIFEST = {
+  "01": [
+    "CFD.png",
+    "MoreBuildPhotos (1).HEIC",
+    "MoreBuildPhotos (2).HEIC",
+    "PCB-2.jpg",
+    "PCB-4.png",
+    "PCB-5.png",
+    "PCB-6.png",
+    "PCB.jpg",
+    "Top.jpg",
+    "cfd-2.png",
+    "cfd-3.png",
+    "cover.png",
+    "matlab-2.png",
+    "matlab-3.png",
+    "matlab-4.png",
+    "matlab.png",
+    "pcb-3.png",
+    "pcb-7.png",
+    "top-2.jpg",
+    "top-3.jpg",
+    "top-4.jpg"
+  ],
+  "02": [
+    "BuildPhoto-3.png",
+    "Frame-2.jpg",
+    "Frame.jpg",
+    "Hotend-2.png",
+    "Hotend.jpg",
+    "IMG_2587.jpg",
+    "IMG_3136.jpg",
+    "Print.png",
+    "Video.mp4",
+    "aluminum-2.png",
+    "aluminum-3.png",
+    "aluminum-4.png",
+    "aluminum-5.png",
+    "aluminum.png",
+    "cover.png",
+    "front.jpg",
+    "gantry (1).MOV",
+    "gantry (1).jpg",
+    "gantry (2).jpg",
+    "gantry (3).jpg"
+  ],
+  "03": [
+    "code-1.jpg",
+    "code-2.jpg",
+    "cover.png",
+    "fiberglass (1).jpg",
+    "fiberglass (2).jpg",
+    "front-2.jpg",
+    "front-3.jpg",
+    "front.jpg",
+    "launchVideo-2.mov",
+    "launchVideo.MP4",
+    "moreBuildPhotos (1).jpg",
+    "moreBuildPhotos (2).jpg",
+    "paint-2.jpg",
+    "paint.jpg",
+    "pcb-2.jpg",
+    "pcb-3.jpg",
+    "pcb.jpg",
+    "simulation-2.png",
+    "simulation-3.png",
+    "simulation.png"
+  ],
+  "04": [
+    "chassis-2.jpg",
+    "chassis-3.jpg",
+    "chassis.jpg",
+    "comp.jpg",
+    "cover.png",
+    "front.jpg",
+    "pcb-2.jpg",
+    "pcb-3.jpg",
+    "pcb.jpg",
+    "programming.jpg"
+  ],
+  "05": [
+    "build-2.jpg",
+    "build-3.jpg",
+    "build.jpg",
+    "cover.jpg",
+    "desk-2.jpg",
+    "desk-3.jpg",
+    "desk.jpg"
+  ],
+  "06": [
+    "Airframe (1).png",
+    "Airframe (2).png",
+    "buildphoto.jpg",
+    "cover.png",
+    "front (1).jpg",
+    "front (2).jpg",
+    "launch (1).jpg",
+    "launch (1).mov",
+    "launch (2).jpg",
+    "launch (2).mov",
+    "pcb (1).jpg",
+    "pcb (2).jpg",
+    "pcb (3).jpg",
+    "pcb (4).jpg",
+    "pcb (5).jpg"
+  ],
+  "07": [
+    "Front.HEIC",
+    "cover.png"
+  ],
+  "08": [
+    "Buildphoto-2.jpg",
+    "Buildphoto-3.jpg",
+    "Buildphoto.jpg",
+    "Front.jpg",
+    "cover.jpg",
+    "printvideo.mp4",
+    "software.jpg"
+  ],
+  "09": [
+    "cover.png",
+    "example.mp4",
+    "front (1).png",
+    "front (2).png"
+  ],
+  "10": [
+    "cover.jpg",
+    "design.png",
+    "front.jpg",
+    "inUse (1).jpg",
+    "inUse (2).jpg"
+  ],
+  "11": [
+    "cover.png",
+    "example (1).png",
+    "example (2).png"
+  ],
+  "12": [
+    "cover.png"
+  ]
+};

@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LUKA GRUEV Selected Work</title>
+<meta name="description" content="Selected hardware, software, and design work by Luka Gruev.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=parallax-1">
+</head>
+<body>
+
+<!-- ============ TOP STICKY BAR ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-col left"><span>LUKA GRUEV</span></div>
+    <div class="topbar-col center"><span>2026 · Champaign, IL</span></div>
+    <div class="topbar-col right">
+      <a href="#about">ABOUT</a>
+      <span class="dot"></span>
+      <a href="#featured">PROJECTS</a>
+      <span class="dot"></span>
+      <a href="#footer">CONTACT</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO + ABOUT (combined intro) ============ -->
+<section class="hero" id="hero">
+  <a id="about" class="anchor"></a>
+  <div class="hero-grid">
+    <div class="hero-left">
+      <p class="eyebrow"><span class="dot-fill"></span>Hardware · Software · Design</p>
+      <h1 class="hero-name">
+        <span class="line-wrap"><span class="line-inner">LUKA</span></span>
+        <span class="line-wrap"><span class="line-inner">GRUEV</span></span>
+      </h1>
+
+      <p class="hero-lede">
+        I'm a high schooler in Urbana, Illinois who builds things end to end,
+        rockets, PCBs, software, and 3D printers. I treat engineering and
+        design as the same act, <em>shaping systems</em> from PCB to product.
+      </p>
+      <p class="hero-lede secondary">
+        Twelve self-initiated projects across rockets, robotics, embedded
+        electronics, and software all designed and shipped from scratch.
+        Looking for collaborators, mentors, and a shot at building bigger.
+      </p>
+
+      <ul class="about-list">
+        <li><span class="k">Based</span><span class="v">Urbana, IL</span></li>
+        <li><span class="k">Email</span><span class="v"><a href="mailto:vgruev@illinois.edu">vgruev@illinois.edu</a></span></li>
+        <li><span class="k">Tools</span><span class="v">KiCad · C/C++ · MATLAB · CAD · Python · CFD</span></li>
+        <li><span class="k">Domains</span><span class="v">Embedded · Aerospace · Robotics · Web</span></li>
+      </ul>
+
+      <div class="hero-cta-row">
+        <a class="btn-primary" href="#featured">SEE THE WORK <span class="arrow">→</span></a>
+        <a class="btn-ghost" href="mailto:vgruev@illinois.edu">CONTACT ME</a>
+      </div>
+      <div class="hero-meta-row">
+        <div><span class="meta-num">12+</span><span class="meta-lbl">HIGH LEVEL Projects</span></div>
+        <div><span class="meta-num">5+</span><span class="meta-lbl">Years of Experience</span></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <figure class="hero-image-wrap">
+        <img src="assets/me/luka.jpg" alt="Luka Gruev with a rocket at sunset" loading="eager">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED PROJECTS ============ -->
+<div id="featured"></div>
+
+<!-- ---------- 1. KROCKET ---------- -->
+<section class="feature" data-side="left">
+  <div class="feature-head">
+    <span class="feature-num">01 / 03</span>
+    <h2 class="feature-title">KROCKET V1</h2>
+    <p class="feature-sub">Actively Controlled Rocket · 2026 (WIP)</p>
+  </div>
+
+  <div class="feature-hero">
+    <img src="assets/01/Top.jpg" alt="KRocket V1 hero">
+  </div>
+
+  <div class="feature-body">
+    <div class="feature-text">
+      <p class="lead">
+        After my earlier rockets, I wanted to push further and build one that
+        actively stabilizes itself in flight. Every part from the two-PCB
+        avionics stack to the Kalman filter to the custom fin actuators was
+        designed and built from scratch.
+      </p>
+      <p>
+        It runs on an STM32F7 with barometers, IMUs, GNSS, magnetometers, and
+        LoRa telemetry. I tuned the PID gains in MATLAB against a Simulink
+        6-DOF model cross-checked with CFD before any flight hardware was cut.
+      </p>
+    </div>
+    <ul class="feature-meta">
+      <li><span>Year</span><strong>2026</strong></li>
+      <li><span>Domain</span><strong>Hardware · Software</strong></li>
+      <li><span>Stack</span><strong>C++ · KiCad · MATLAB · CFD</strong></li>
+      <li><span>Status</span><strong>In progress</strong></li>
+    </ul>
+  </div>
+
+  <div class="gallery">
+    <figure class="g-tall"><img src="assets/01/PCB.jpg" alt="KRocket PCB stack"></figure>
+    <figure><img src="assets/01/matlab.png" alt="MATLAB tuning"></figure>
+    <figure><img src="assets/01/CFD.png" alt="CFD simulation"></figure>
+    <figure class="g-wide"><img src="assets/01/cfd-2.png" alt="CFD detail"></figure>
+    <figure><img src="assets/01/PCB-4.png" alt="PCB layout"></figure>
+    <figure><img src="assets/01/matlab-3.png" alt="MATLAB plot"></figure>
+  </div>
+</section>
+
+<!-- ---------- 2. LUKSER ---------- -->
+<section class="feature" data-side="right">
+  <div class="feature-head">
+    <span class="feature-num">02 / 03</span>
+    <h2 class="feature-title">LUKSER</h2>
+    <p class="feature-sub">A Ground-Up 3D Printer · 2023</p>
+  </div>
+
+  <div class="feature-hero">
+    <img src="assets/02/front.jpg" alt="LUKSER 3D printer">
+  </div>
+
+  <div class="feature-body">
+    <div class="feature-text">
+      <p class="lead">
+        After printing on an Ender 3 and SV06+, I wanted to design a printer
+        of my own one that was fast and reliable from the ground up. Every
+        choice from the frame to the hotend was mine to make.
+      </p>
+      <p>
+        The motion system uses seven independent motors (most printers use
+        three). The hotend is custom-machined with high-wattage nichrome
+        wiring, pushing volumetric flow up to 100 mm³/s roughly 8× a stock
+        Ender 3. The frame is 1.5" aluminum extrusion, ~30 lbs, dead solid.
+      </p>
+    </div>
+    <ul class="feature-meta">
+      <li><span>Year</span><strong>2023</strong></li>
+      <li><span>Domain</span><strong>Hardware</strong></li>
+      <li><span>Stack</span><strong>C · Python · STM32</strong></li>
+      <li><span>Status</span><strong>In development</strong></li>
+    </ul>
+  </div>
+
+  <div class="gallery">
+    <figure class="g-tall"><img src="assets/02/Frame.jpg" alt="LUKSER frame"></figure>
+    <figure><img src="assets/02/aluminum.png" alt="Aluminum stepper mount"></figure>
+    <figure><img src="assets/02/Hotend.jpg" alt="Custom hotend"></figure>
+    <figure><img src="assets/02/gantry (1).jpg" alt="Gantry"></figure>
+    <figure class="g-wide"><img src="assets/02/Print.png" alt="Print result"></figure>
+    <figure><img src="assets/02/aluminum-3.png" alt="Aluminum part detail"></figure>
+  </div>
+</section>
+
+<!-- ---------- 3. RGSOUND ---------- -->
+<section class="feature" data-side="left">
+  <div class="feature-head">
+    <span class="feature-num">03 / 03</span>
+    <h2 class="feature-title">RGSOUND</h2>
+    <p class="feature-sub">Custom LED Controller, Reactive to Sound · 2025</p>
+  </div>
+
+  <div class="feature-hero">
+    <img src="assets/05/desk.jpg" alt="RGSOUND on desk">
+  </div>
+
+  <div class="feature-body">
+    <div class="feature-text">
+      <p class="lead">
+        I built RGSOUND because I wanted a clean, custom way to drive the
+        LED strips on my desk every off-the-shelf controller I tried was
+        either too limited, too bulky, or too expensive.
+      </p>
+      <p>
+        Custom PCB designed from scratch in KiCad. ESP32 with onboard antenna,
+        driving WS2812B addressables and reacting to audio in real time. The
+        layout went through a few passes to land on a two-layer board to keep
+        cost down. Running daily on my desk and the inspiration for CAPSOUND.
+      </p>
+    </div>
+    <ul class="feature-meta">
+      <li><span>Year</span><strong>2025</strong></li>
+      <li><span>Domain</span><strong>Hardware · Software</strong></li>
+      <li><span>Stack</span><strong>C · KiCad · ESP32</strong></li>
+      <li><span>Status</span><strong>Built · in use</strong></li>
+    </ul>
+  </div>
+
+  <div class="gallery">
+    <figure class="g-tall"><img src="assets/05/build.jpg" alt="RGSOUND PCB build"></figure>
+    <figure><img src="assets/05/build-2.jpg" alt="Build detail"></figure>
+    <figure><img src="assets/05/desk-2.jpg" alt="On desk"></figure>
+    <figure class="g-wide"><img src="assets/05/desk-3.jpg" alt="Desk install"></figure>
+    <figure><img src="assets/05/build-3.jpg" alt="Build closeup"></figure>
+  </div>
+</section>
+
+<!-- ============ OTHER PROJECTS ACCORDION ============ -->
+<!-- ============ MORE PROJECTS GALLERY GRID ============ -->
+<section class="more" id="more">
+  <div class="more-head">
+    <span class="rule"></span>
+    <h2>More projects</h2>
+    <span class="more-count">9 builds</span>
+  </div>
+
+  <div class="proj-grid">
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">03</span>
+        <img src="assets/03/cover.png" alt="LOCKET" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">LOCKET</h3>
+        <p class="proj-meta">Hardware &middot; Software &mdash; 2024 &middot; Flown</p>
+        <p class="proj-desc">A high-power rocket that reached 4,000 feet, armed with custom avionics, ground-to-air telemetry, and an onboard camera.</p>
+        <p class="proj-stack">C &middot; KiCad &middot; MATLAB</p>
+      </div>
+    </article>
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">04</span>
+        <img src="assets/04/cover.png" alt="BatBot V2" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">BatBot V2</h3>
+        <p class="proj-meta">Hardware &middot; Software &mdash; 2023 &middot; Built</p>
+        <p class="proj-desc">A combat robot built from scratch &mdash; custom electronics, custom chassis, machined for mass and toughness.</p>
+        <p class="proj-stack">C &middot; KiCad</p>
+      </div>
+    </article>
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">06</span>
+        <img src="assets/06/cover.png" alt="Uni High Rocket" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">Uni High Rocket</h3>
+        <p class="proj-meta">Hardware &middot; Software &mdash; 2024 &middot; Flown</p>
+        <p class="proj-desc">A small smart rocket built to learn the basics of avionics before scaling up to LOCKET and KROCKET. Designed and flown.</p>
+        <p class="proj-stack">C &middot; KiCad</p>
+      </div>
+    </article>
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">07</span>
+        <img src="assets/07/cover.png" alt="LoRase" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">LoRase</h3>
+        <p class="proj-meta">Hardware &middot; Software &mdash; 2025 &middot; Built</p>
+        <p class="proj-desc">A long-range telemetry system built around the LoRa radio standard &mdash; kilometer-class link budgets at low power.</p>
+        <p class="proj-stack">C &middot; KiCad &middot; LoRa</p>
+      </div>
+    </article>
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">08</span>
+        <img src="assets/08/cover.jpg" alt="LG06+" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">LG06+</h3>
+        <p class="proj-meta">Hardware &middot; Software &mdash; 2023 &middot; In use</p>
+        <p class="proj-desc">My modified Sovol SV06+ &mdash; a long list of upgrades pushing the stock machine on speed, quality, and reliability.</p>
+        <p class="proj-stack">C &middot; CAD</p>
+      </div>
+    </article>
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">09</span>
+        <img src="assets/09/cover.png" alt="CAPSOUND" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">CAPSOUND</h3>
+        <p class="proj-meta">Software &mdash; 2026 &middot; Released</p>
+        <p class="proj-desc">An open-source audio visualization tool that renders real-time visuals driven by the FFT of any audio input.</p>
+        <p class="proj-stack">JavaScript</p>
+      </div>
+    </article>
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">10</span>
+        <img src="assets/10/cover.jpg" alt="CTestTube" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">CTestTube</h3>
+        <p class="proj-meta">Hardware &mdash; 2025 &middot; In use</p>
+        <p class="proj-desc">3D-printed test tube racks and lab accessories &mdash; functional, sterilizable, and a fraction of off-the-shelf cost.</p>
+        <p class="proj-stack">CAD</p>
+      </div>
+    </article>
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">11</span>
+        <img src="assets/11/cover.png" alt="Dice Design" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">Dice Design</h3>
+        <p class="proj-meta">Software &mdash; 2026 &middot; Released</p>
+        <p class="proj-desc">A web-based tool for designing custom dice &mdash; configure geometry, faces, and materials, then export a 3D-printable model.</p>
+        <p class="proj-stack">JavaScript &middot; Three.js</p>
+      </div>
+    </article>
+
+    <article class="proj-card">
+      <div class="proj-image">
+        <span class="proj-id">12</span>
+        <img src="assets/12/cover.png" alt="LightSim" loading="lazy">
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title">LightSim</h3>
+        <p class="proj-meta">Software &mdash; 2026 &middot; Built</p>
+        <p class="proj-desc">A lightweight fin force simulator for rockets &mdash; quick predictions of side force and pitching moment without a full CFD pass.</p>
+        <p class="proj-stack">Python</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+
+<!-- ============ FOOTER CARD ============ -->
+<section class="footer-card" id="footer">
+  <a class="footer-link" href="mailto:vgruev@illinois.edu">
+    <div class="footer-row top">
+      <h2 class="big-line"><span class="line">And now</span></h2>
+      <h2 class="big-line"><span class="line">the next build.</span></h2>
+    </div>
+    <p class="footer-copy">
+      I'm a high schooler in Champaign, IL working across software, hardware, and design.
+      Looking for collaborators, commissions, and a shot at building bigger things.
+    </p>
+    <p class="footer-copy small">
+      vgruev@illinois.edu · @luka.makesstuff · linkedin/luka-gruev
+    </p>
+    <div class="footer-cta">
+      <span>SAY HI</span>
+      <span class="arrow">→</span>
+    </div>
+  </a>
+  <div class="footer-meta">
+    <span>40.1106° N</span>
+    <span>−88.2073° W</span>
+    <span>Urbana, IL</span>
+    <span id="clock">12:00 AM</span>
+  </div>
+</section>
+
+<script src="script.js?v=preload-1"></script>
+</body>
+</html>
