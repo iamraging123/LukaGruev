@@ -5,15 +5,6 @@
     if (hero) hero.classList.add('ready');
   });
 
-  // ---------- Scroll reveal ----------
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
-  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
-
-  document.querySelectorAll('.feature, .statement, .footer-card').forEach(el => io.observe(el));
-
-  // (Accordion removed. More projects is now a static gallery grid.)
-
   // ---------- Hero photo: mouse parallax ----------
   const heroImg = document.querySelector('.hero-image-wrap img');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -49,56 +40,8 @@
     document.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
   }
 
-  // ---------- Smooth / slowed page scroll ----------
-  // Intercepts mouse-wheel and eases the document toward the target offset
-  // so vertical scrolling has weight & glide. Touch / reduced-motion users
-  // keep the native scroll behaviour.
-  const isCoarsePointer = matchMedia('(pointer: coarse)').matches;
-  if (!reduceMotion && !isCoarsePointer) {
-    let sTarget  = window.scrollY;
-    let sCurrent = window.scrollY;
-    let sRaf     = 0;
-
-    const FRICTION   = 0.075;   // lower = slower glide (try 0.06–0.12)
-    const WHEEL_MULT = 0.55;    // <1 = each wheel tick travels less ground
-
-    const maxScroll = () =>
-      Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    const clampS = (v) => Math.max(0, Math.min(maxScroll(), v));
-
-    const step = () => {
-      sCurrent += (sTarget - sCurrent) * FRICTION;
-      if (Math.abs(sTarget - sCurrent) < 0.5) {
-        sCurrent = sTarget;
-        window.scrollTo(0, sCurrent);
-        sRaf = 0;
-        return;
-      }
-      window.scrollTo(0, sCurrent);
-      sRaf = requestAnimationFrame(step);
-    };
-    const kickScroll = () => { if (!sRaf) sRaf = requestAnimationFrame(step); };
-
-    window.addEventListener('wheel', (e) => {
-      if (e.ctrlKey) return;          // leave browser pinch-zoom alone
-      e.preventDefault();
-      sTarget = clampS(sTarget + e.deltaY * WHEEL_MULT);
-      kickScroll();
-    }, { passive: false });
-
-    // Stay in sync when the page is scrolled by other means
-    // (anchor links, keyboard, scrollbar drag, programmatic scroll).
-    window.addEventListener('scroll', () => {
-      if (!sRaf) {
-        sTarget  = window.scrollY;
-        sCurrent = window.scrollY;
-      }
-    }, { passive: true });
-  }
-
   // ---------- Background image preloader ----------
-  // Big images decoded at scroll-time stall the smooth-scroll loop. Instead,
-  // walk every <img> after first paint and force fetch + async decode so
+  // Walk every <img> after first paint and force fetch + async decode so
   // they're already rasterized by the time they enter the viewport.
   const preloadOne = (img) => new Promise((resolve) => {
     img.decoding = 'async';
