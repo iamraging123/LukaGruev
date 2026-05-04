@@ -13,7 +13,7 @@
   const heroImg = document.querySelector('.hero-image-wrap img');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (heroImg) {
-    const MAX_SHIFT = 50;          // px max parallax in any direction
+    const MAX_SHIFT = 25;          // px max parallax in any direction
     const EASE      = 0.10;        // higher = snappier mouse follow
     const INTRO_MS  = 6000;        // intro dolly duration
     const SCALE_FROM = 1.30;       // starting zoom
