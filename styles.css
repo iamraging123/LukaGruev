@@ -234,14 +234,12 @@ em { font-style: italic; color: var(--cream); }
 .hero-image-wrap img {
   width: 100%; height: 100%; object-fit: cover;
   object-position: center 35%;
-  /* Independent transform parts: scale runs the intro dolly,
-     translate is driven live by JS via --mx / --my (mouse parallax). */
-  scale: 1.18;
-  translate: var(--mx, 0px) var(--my, 0px);
-  transition: scale 8s ease-out;
-  will-change: translate, scale;
+  /* Both intro dolly AND mouse parallax are driven by a single rAF loop
+     in JS that writes inline `transform`. Using transform shorthand keeps
+     the effect compatible across every browser. */
+  transform: translate3d(0px, 0px, 0) scale(1.30);
+  will-change: transform;
 }
-.hero.ready .hero-image-wrap img { scale: 1.10; }
 .hero-image-tag {
   position: absolute;
   left: 16px; bottom: 16px;
@@ -793,9 +791,44 @@ em { font-style: italic; color: var(--cream); }
   .footer-meta span:nth-child(n) { text-align: left; }
 }
 
+/* ============ SCROLL REVEALS ============ */
+/* Elements with .reveal start hidden; JS adds .in-view when they enter the
+   viewport. Direction is set via data-reveal="up|left|right|zoom". */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity .9s cubic-bezier(.2,.7,.1,1),
+    transform .9s cubic-bezier(.2,.7,.1,1);
+  will-change: opacity, transform;
+}
+.reveal[data-reveal="up"]    { transform: translate3d(0, 60px, 0); }
+.reveal[data-reveal="left"]  { transform: translate3d(-80px, 30px, 0) rotate(-2deg); }
+.reveal[data-reveal="right"] { transform: translate3d(80px, 30px, 0) rotate(2deg); }
+.reveal[data-reveal="zoom"]  { transform: translate3d(0, 40px, 0) scale(0.94); }
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(0) scale(1);
+}
+
+/* Stagger children inside a .reveal-stagger container.
+   Each direct child gets a progressively longer transition-delay so
+   gallery photos and project cards roll in one after another. */
+.reveal-stagger > * { transition-delay: 0s; }
+.reveal-stagger > *:nth-child(1)  { transition-delay: .00s; }
+.reveal-stagger > *:nth-child(2)  { transition-delay: .08s; }
+.reveal-stagger > *:nth-child(3)  { transition-delay: .16s; }
+.reveal-stagger > *:nth-child(4)  { transition-delay: .24s; }
+.reveal-stagger > *:nth-child(5)  { transition-delay: .32s; }
+.reveal-stagger > *:nth-child(6)  { transition-delay: .40s; }
+.reveal-stagger > *:nth-child(7)  { transition-delay: .48s; }
+.reveal-stagger > *:nth-child(8)  { transition-delay: .56s; }
+.reveal-stagger > *:nth-child(9)  { transition-delay: .64s; }
+
 /* ============ REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
-  .line-inner, .line, .gallery img, .feature-hero img, .hero-image-wrap, .hero-image-wrap img {
+  .line-inner, .line, .gallery img, .feature-hero img, .hero-image-wrap, .hero-image-wrap img,
+  .reveal {
     transition: none !important;
     animation: none !important;
     opacity: 1 !important;
