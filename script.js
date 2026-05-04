@@ -435,6 +435,25 @@
     .map((src) => `<figure><img src="${escapeHtml(src)}" alt="${escapeHtml(alt || '')}" loading="lazy"></figure>`)
     .join('');
 
+  // Carousel for split sections — one image visible at a time, prev/next
+  // arrows hidden when there's only a single image.
+  const carouselHtml = (paths, alt) => {
+    const list = paths || [];
+    if (!list.length) return '';
+    const single = list.length < 2 ? ' ms-carousel--single' : '';
+    const slides = list.map((src, i) =>
+      `<figure class="ms-carousel-slide${i === 0 ? ' active' : ''}">
+        <img src="${escapeHtml(src)}" alt="${escapeHtml(alt || '')}" loading="lazy">
+      </figure>`
+    ).join('');
+    return `<div class="ms-carousel${single}">
+      <div class="ms-carousel-stage">${slides}</div>
+      <button class="ms-carousel-prev" aria-label="Previous image" type="button">&larr;</button>
+      <button class="ms-carousel-next" aria-label="Next image" type="button">&rarr;</button>
+      <span class="ms-carousel-counter">1 / ${list.length}</span>
+    </div>`;
+  };
+
   const renderSection = (s) => {
     if (s.type === 'text') {
       return `<section class="ms ms-text">
@@ -449,7 +468,7 @@
           <h3 class="ms-heading">${escapeHtml(s.heading)}</h3>
           <div class="ms-prose">${proseHtml(s.text)}</div>
         </div>
-        <div class="ms-split-images">${figuresHtml(s.images, s.heading)}</div>
+        <div class="ms-split-images">${carouselHtml(s.images, s.heading)}</div>
       </section>`;
     }
     if (s.type === 'code') {
@@ -497,6 +516,71 @@
     `;
   };
 
+  // Wire prev/next arrows on every carousel inside `root` after render.
+  // Each carousel tracks its own active index — independent of siblings.
+  const wireCarousels = (root) => {
+    root.querySelectorAll('.ms-carousel').forEach((car) => {
+      const slides  = Array.from(car.querySelectorAll('.ms-carousel-slide'));
+      const counter = car.querySelector('.ms-carousel-counter');
+      const prev    = car.querySelector('.ms-carousel-prev');
+      const next    = car.querySelector('.ms-carousel-next');
+      if (slides.length < 2) return;
+      let i = 0;
+      const update = () => {
+        slides.forEach((s, j) => s.classList.toggle('active', j === i));
+        if (counter) counter.textContent = `${i + 1} / ${slides.length}`;
+      };
+      if (prev) prev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        i = (i - 1 + slides.length) % slides.length;
+        update();
+      });
+      if (next) next.addEventListener('click', (e) => {
+        e.stopPropagation();
+        i = (i + 1) % slides.length;
+        update();
+      });
+    });
+  };
+
+  // Lightbox: shows a single image full-screen. Click the image to toggle
+  // 2x zoom; click the backdrop or the close button (or hit Esc) to dismiss.
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg   = lightbox && lightbox.querySelector('.lightbox-img');
+  const lightboxStage = lightbox && lightbox.querySelector('.lightbox-stage');
+
+  const openLightbox = (src, alt) => {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightboxStage.classList.remove('zoomed');
+    lightboxStage.scrollTo(0, 0);
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+  };
+  const closeLightbox = () => {
+    if (!lightbox) return;
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxStage.classList.remove('zoomed');
+  };
+
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target.closest('[data-lightbox-close]')) { closeLightbox(); return; }
+      if (e.target === lightboxImg) {
+        lightboxStage.classList.toggle('zoomed');
+        // Reset scroll when un-zooming so the next zoom starts centered.
+        if (!lightboxStage.classList.contains('zoomed')) {
+          lightboxStage.scrollTo(0, 0);
+        }
+        return;
+      }
+      // Click on the backdrop / stage area outside the image closes.
+      closeLightbox();
+    });
+  }
+
   const modal = document.getElementById('proj-modal');
   if (modal) {
     const modalContent = modal.querySelector('.modal-content');
@@ -508,6 +592,7 @@
       lastFocus = document.activeElement;
       modalContent.innerHTML = renderProject(project);
       modalContent.scrollTop = 0;
+      wireCarousels(modalContent);
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
@@ -531,11 +616,24 @@
       }
       if (e.target.closest('[data-modal-close]')) {
         closeModal();
+        return;
+      }
+      // Any <img> anywhere on the page opens the lightbox — except clicks
+      // inside the lightbox itself, which the lightbox handler manages.
+      const img = e.target.closest('img');
+      if (img && !e.target.closest('#lightbox')) {
+        openLightbox(img.currentSrc || img.src, img.alt);
       }
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      if (e.key !== 'Escape') return;
+      // Lightbox always wins — close it first if it's open.
+      if (lightbox && lightbox.classList.contains('open')) {
+        closeLightbox();
+        return;
+      }
+      if (modal.classList.contains('open')) closeModal();
     });
   }
 

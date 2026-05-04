@@ -8,7 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d0d0d'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='15' font-weight='800' fill='%23fff9e6' text-anchor='middle' letter-spacing='-1'%3ELG%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=modal-2">
+<link rel="stylesheet" href="styles.css?v=lightbox-2">
 </head>
 <body>
 
@@ -389,6 +389,15 @@
   </div>
 </div>
 
-<script src="script.js?v=modal-2"></script>
+<!-- ============ IMAGE LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+  <button class="lightbox-close" data-lightbox-close aria-label="Close">&times;</button>
+  <div class="lightbox-stage">
+    <img class="lightbox-img" src="" alt="">
+  </div>
+  <span class="lightbox-hint">Click image to zoom · Esc to close</span>
+</div>
+
+<script src="script.js?v=lightbox-2"></script>
 </body>
 </html>
