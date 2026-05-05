@@ -175,8 +175,12 @@ em { font-style: italic; color: var(--cream); }
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 14px 22px;
+  padding: 12px 20px;
   border-radius: 999px;
+  width: fit-content;            /* belt-and-suspenders: never let a parent flex stretch this */
+  align-self: flex-start;
+  flex: 0 0 auto;
+  cursor: pointer;
   transition: background .2s, color .2s, border-color .2s, transform .2s;
 }
 .btn-primary {
@@ -512,6 +516,7 @@ em { font-style: italic; color: var(--cream); }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: 220px;
+  grid-auto-flow: dense;       /* backfill gaps left by g-tall / g-wide spans */
   gap: 14px;
 }
 .gallery figure {
