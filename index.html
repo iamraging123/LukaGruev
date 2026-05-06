@@ -5,403 +5,1102 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LUKA GRUEV Selected Work</title>
 <meta name="description" content="Selected hardware, software, and design work by Luka Gruev.">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d0d0d'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='15' font-weight='800' fill='%23fff9e6' text-anchor='middle' letter-spacing='-1'%3ELG%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0a'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='15' font-weight='800' fill='%23aee89a' text-anchor='middle' letter-spacing='-1'%3ELG%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=button-fix-1">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --bg-2:#171717;
+    --bg-3:#202020;
+    --ink:#f5f0e6;
+    --ink-dim:#a8a297;
+    --ink-mute:#6a6458;
+    --rule:#2a2a2a;
+    --green:#aee89a;
+    --red:#d63a2f;
+    --pixel:"Silkscreen", ui-monospace, monospace;
+    --term:"VT323", ui-monospace, monospace;
+    --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{
+    background:var(--bg);color:var(--ink);
+    font-family:var(--mono);font-size:14px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body{overflow-x:clip}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%;height:auto}
+  ::selection{background:var(--green);color:var(--bg)}
+
+  /* PIXEL ICON BASE */
+  .px{display:inline-block;width:1em;height:1em;fill:currentColor;vertical-align:-.18em;shape-rendering:crispEdges}
+
+  /* layout */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  /* ============ TOP NAV ============ */
+  .nav{
+    position:sticky;top:0;z-index:40;background:var(--bg);
+    border-bottom:2px solid var(--ink);
+  }
+  .nav-inner{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:24px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--pixel);font-size:13px;letter-spacing:0;color:var(--ink)}
+  .logo .px{width:18px;height:18px}
+  .nav ul{list-style:none;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .nav ul a{
+    display:inline-block;padding:6px 12px;font-family:var(--mono);font-size:12px;
+    letter-spacing:.04em;color:var(--ink);border:2px solid transparent;
+    transition:border-color .12s, background .12s;
+  }
+  .nav ul a:hover{border-color:var(--ink);background:var(--bg-2)}
+  .nav ul a .num{font-family:var(--pixel);font-size:10px;color:var(--ink-mute);margin-right:6px}
+
+  /* ============ HERO ============ */
+  .hero{padding:72px 0 56px;border-bottom:2px solid var(--ink)}
+  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:center}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;font-family:var(--pixel);
+    font-size:11px;letter-spacing:0;color:var(--ink-dim);margin-bottom:24px;
+    padding:6px 10px;background:var(--bg-2);border:2px solid var(--ink);
+  }
+  .eyebrow .blink{display:inline-block;width:8px;height:8px;background:var(--red);animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  h1.name{
+    font-family:var(--pixel);font-weight:700;
+    font-size:clamp(48px,9vw,108px);line-height:1;letter-spacing:0;
+    color:var(--ink);margin-bottom:8px;
+  }
+  h1.name .row{display:block}
+  h1.name .row + .row{margin-top:8px}
+  h1.name .accent{color:var(--ink);position:relative;display:inline-block}
+  h1.name .accent::after{
+    content:"";position:absolute;left:0;right:0;bottom:-6px;height:8px;
+    background:var(--green);z-index:-1;
+  }
+  .hero-tag{
+    font-family:var(--term);font-size:24px;line-height:1.2;color:var(--ink-dim);
+    margin-top:6px;letter-spacing:.02em;
+  }
+  .hero-tag .cursor{display:inline-block;width:10px;height:18px;background:var(--ink);margin-left:2px;vertical-align:-3px;animation:blink 1s steps(2) infinite}
+
+  .hero-lede{font-size:15px;line-height:1.7;margin-top:24px;max-width:560px;color:var(--ink)}
+  .hero-lede.s{color:var(--ink-dim);margin-top:8px;font-size:14px}
+
+  .hero-stats{display:flex;gap:18px;margin-top:32px;flex-wrap:wrap}
+  .stat{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-2);border:2px solid var(--ink)}
+  .stat .px{width:18px;height:18px;color:var(--ink)}
+  .stat .n{font-family:var(--pixel);font-size:14px;color:var(--ink)}
+  .stat .l{font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase}
+
+  .cta-row{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap}
+  .btn{
+    position:relative;display:inline-flex;align-items:center;gap:10px;
+    padding:12px 18px;font-family:var(--pixel);font-size:12px;letter-spacing:0;
+    color:var(--ink);background:var(--bg);border:2px solid var(--ink);
+    cursor:pointer;transition:transform .08s, box-shadow .08s;
+    box-shadow:4px 4px 0 var(--green);
+  }
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--green)}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--green)}
+  .btn.fill{background:var(--green);color:var(--bg)}
+  .btn .px{width:14px;height:14px}
+
+  /* portrait */
+  .portrait{
+    position:relative;justify-self:end;width:100%;max-width:380px;
+    border:3px solid var(--ink);background:var(--bg-2);padding:14px;
+    box-shadow:8px 8px 0 var(--green);
+  }
+  .portrait img{
+    width:100%;aspect-ratio:4/5;object-fit:cover;
+    image-rendering:auto;
+    display:block;
+    filter:contrast(1.05) brightness(1.02);
+    border:2px solid var(--ink);
+  }
+  .portrait .tag{
+    position:absolute;top:-12px;left:14px;background:var(--ink);color:var(--bg);
+    font-family:var(--pixel);font-size:10px;padding:4px 10px;letter-spacing:0;
+  }
+  .portrait .meta{
+    margin-top:10px;display:flex;justify-content:space-between;
+    font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase;
+  }
+
+  /* ============ DIVIDER ============ */
+  .div-row{display:flex;align-items:center;gap:14px;padding:28px 0 18px}
+  .div-row h2{font-family:var(--pixel);font-size:16px;letter-spacing:0;color:var(--ink);text-transform:uppercase}
+  .div-row .dots{flex:1;height:6px;background-image:repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 12px);}
+  .div-row .count{font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:.1em;text-transform:uppercase}
+
+  /* ============ FEATURED — DEDICATED SECTIONS ============ */
+  .feat{
+    position:relative;padding:96px 0 88px;border-bottom:2px dashed var(--rule);
+    overflow:hidden;
+  }
+  .feat:last-of-type{border-bottom:none}
+  /* huge background numeral */
+  .feat::before{
+    content:attr(data-num);
+    position:absolute;top:50%;right:-20px;transform:translateY(-50%);
+    font-family:var(--pixel);font-size:clamp(220px, 32vw, 460px);line-height:.85;
+    color:var(--bg-2);letter-spacing:0;pointer-events:none;user-select:none;z-index:0;
+  }
+  .feat .wrap{position:relative;z-index:1}
+
+  /* HEADER: icon + title group */
+  .feat-head{display:flex;gap:32px;align-items:flex-start;margin-bottom:48px}
+  .feat-icon{
+    flex:0 0 auto;width:88px;height:88px;
+    background:var(--bg-2);border:3px solid var(--ink);
+    display:grid;place-items:center;color:var(--ink);
+    box-shadow:7px 7px 0 var(--green);
+  }
+  .feat-icon .px{width:52px;height:52px}
+  .feat-titles{padding-top:6px}
+  .feat-num{font-family:var(--pixel);font-size:13px;color:var(--ink-mute);letter-spacing:0;margin-bottom:14px}
+  .feat-title{
+    font-family:var(--pixel);font-size:clamp(44px, 6.5vw, 76px);
+    letter-spacing:0;color:var(--ink);line-height:1;margin-bottom:14px;
+  }
+  .feat-sub{font-family:var(--mono);font-size:14px;color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase}
+
+  /* IMAGE: full-width hero */
+  .feat-image{
+    position:relative;border:3px solid var(--ink);padding:10px;background:var(--bg-2);
+    box-shadow:10px 10px 0 var(--green);margin-bottom:56px;
+  }
+  .feat-image img,
+  .feat-image video{
+    width:100%;aspect-ratio:16/8;object-fit:cover;display:block;
+    border:1px solid var(--ink);filter:contrast(1.05) brightness(1.02);
+  }
+  .feat-image .cap{
+    margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--ink-dim);
+    letter-spacing:.1em;text-transform:uppercase;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+
+  /* BODY: copy + meta panel */
+  .feat-body{display:grid;grid-template-columns:1.7fr 1fr;gap:48px;align-items:start}
+  .feat-copy p{font-size:17px;line-height:1.75;color:var(--ink);margin-bottom:18px}
+  .feat-copy p.s{color:var(--ink-dim);font-size:15px}
+  .feat-link{
+    display:inline-flex;align-items:center;gap:10px;margin-top:14px;
+    font-family:var(--pixel);font-size:13px;color:var(--ink);
+    padding:10px 16px;background:var(--bg);border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 var(--green);
+    transition:transform .08s, box-shadow .08s, background .12s, color .12s;
+  }
+  .feat-link:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--green);background:var(--green);color:var(--bg)}
+  .feat-link .px{width:14px;height:14px}
+
+  /* META PANEL */
+  .feat-meta-panel{
+    background:var(--bg-2);border:2.5px solid var(--ink);padding:22px 24px;
+    box-shadow:6px 6px 0 var(--green);
+  }
+  .feat-meta-panel h4{
+    font-family:var(--pixel);font-size:13px;letter-spacing:0;color:var(--ink);
+    margin-bottom:16px;padding-bottom:12px;border-bottom:1.5px dashed var(--rule);
+  }
+  .feat-meta-panel ul{list-style:none}
+  .feat-meta-panel li{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:9px 0;font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    border-bottom:1px dotted var(--rule);
+  }
+  .feat-meta-panel li:last-child{border-bottom:none}
+  .feat-meta-panel li span{color:var(--ink-mute);text-transform:uppercase;letter-spacing:.12em;font-size:11px}
+  .feat-meta-panel li strong{color:var(--ink);font-weight:500}
+  .feat-meta-panel li strong.wip{
+    background:var(--green);color:var(--bg);
+    font-family:var(--pixel);font-size:10px;
+    padding:3px 8px;letter-spacing:0;
+  }
+  .feat-meta-panel li strong.done{
+    background:var(--bg);color:var(--ink);border:1px solid var(--ink);
+    font-family:var(--pixel);font-size:10px;
+    padding:3px 8px;letter-spacing:0;
+  }
+
+  /* ============ FEATURED PROJECT BUILD GALLERY ============ */
+  .gallery-section{margin-top:64px}
+  .gallery-head{
+    display:flex;align-items:center;gap:14px;padding-bottom:18px;
+  }
+  .gallery-head h4{
+    font-family:var(--pixel);font-size:13px;letter-spacing:0;color:var(--ink);text-transform:uppercase;
+  }
+  .gallery-head .dots{
+    flex:1;height:6px;
+    background-image:repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 12px);
+  }
+  .gallery-head .count{
+    font-family:var(--mono);font-size:11px;color:var(--ink-dim);
+    letter-spacing:.1em;text-transform:uppercase;
+  }
+
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-auto-rows:180px;
+    grid-auto-flow:dense;
+    gap:14px;
+  }
+  .gallery-grid figure{
+    position:relative;
+    border:2px solid var(--ink);padding:5px;background:var(--bg-2);
+    box-shadow:4px 4px 0 var(--green);
+    overflow:hidden;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .gallery-grid figure:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:6px 6px 0 var(--green);
+    z-index:2;
+  }
+  .gallery-grid figure img,
+  .gallery-grid figure video{
+    width:100%;height:100%;object-fit:cover;display:block;
+    border:1px solid var(--ink);
+    filter:contrast(1.05) brightness(1.02);
+    cursor:default;
+  }
+  .gallery-grid figure.huge{grid-column:span 2;grid-row:span 2}
+  .gallery-grid figure.wide{grid-column:span 2}
+  .gallery-grid figure.tall{grid-row:span 2}
+  .gallery-grid figure.video::before{
+    content:"▶ PLAYING";
+    position:absolute;top:9px;left:9px;z-index:3;
+    font-family:var(--pixel);font-size:9px;letter-spacing:.04em;
+    color:var(--bg);background:var(--green);
+    padding:3px 7px;
+    pointer-events:none;
+  }
+  @media (max-width: 900px){
+    .gallery-grid{grid-template-columns:repeat(3, 1fr);grid-auto-rows:160px}
+  }
+  @media (max-width: 600px){
+    .gallery-grid{grid-template-columns:repeat(2, 1fr);grid-auto-rows:140px;gap:10px}
+    .gallery-grid figure.huge{grid-column:span 2;grid-row:span 2}
+    .gallery-grid figure.wide{grid-column:span 2}
+  }
+
+  /* ============ TYPING ANIMATION ============ */
+  .type{position:relative}
+  .type.typing::after{
+    content:'';display:inline-block;
+    width:9px;height:1.05em;background:var(--green);
+    margin-left:3px;vertical-align:-3px;
+    animation:blink 0.7s steps(2) infinite;
+  }
+
+  /* ============ FADE-UP REVEAL (every other element) ============ */
+  .fx{
+    opacity:0;transform:translateY(14px);
+    transition:opacity .36s ease-out, transform .36s ease-out;
+    will-change:opacity, transform;
+  }
+  .fx.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    .fx{opacity:1;transform:none;transition:none}
+    .type.typing::after{animation:none}
+  }
+
+  /* ============ MORE PROJECTS ============ */
+  .grid-9{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+  .card{
+    position:relative;background:var(--bg-2);border:2px solid var(--ink);
+    padding:18px;display:flex;flex-direction:column;gap:10px;
+    transition:transform .12s, box-shadow .12s;
+    box-shadow:4px 4px 0 var(--green);
+  }
+  .card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--green);background:var(--bg-3)}
+  .card .head{display:flex;align-items:center;gap:12px}
+  .card .ico{
+    width:36px;height:36px;background:var(--bg);border:2px solid var(--ink);
+    display:grid;place-items:center;flex:0 0 auto;
+  }
+  .card .ico .px{width:22px;height:22px}
+  .card .id{font-family:var(--pixel);font-size:10px;color:var(--ink-mute);letter-spacing:0}
+  .card h3{font-family:var(--pixel);font-size:18px;letter-spacing:0;color:var(--ink);line-height:1}
+  .card .desc{font-size:13px;line-height:1.55;color:var(--ink-dim);min-height:60px}
+  .card .meta{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:auto;padding-top:12px;border-top:2px dotted var(--rule);
+    font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);
+  }
+  .card .arrow{font-family:var(--pixel);font-size:12px;color:var(--ink)}
+
+  /* ============ FOOTER ============ */
+  .foot{
+    margin-top:48px;border-top:2px solid var(--ink);padding:48px 0 36px;
+    background:var(--bg-2);
+  }
+  .foot-grid{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:start}
+  .foot-icon{width:80px;height:80px;background:var(--bg);border:3px solid var(--ink);display:grid;place-items:center;color:var(--ink);box-shadow:6px 6px 0 var(--green)}
+  .foot-icon .px{width:48px;height:48px}
+  .foot h2{font-family:var(--pixel);font-size:clamp(28px,4vw,44px);line-height:1;color:var(--ink);margin-bottom:16px;letter-spacing:0}
+  .foot h2 .accent{position:relative;display:inline-block}
+  .foot h2 .accent::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:6px;background:var(--green);z-index:-1}
+  .foot p{max-width:620px;margin-bottom:8px}
+  .foot p.s{color:var(--ink-dim);font-size:13px}
+  .foot .channels{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:12px}
+  .foot .channels a{
+    padding:6px 10px;background:var(--bg);border:2px solid var(--ink);
+    transition:background .12s;
+  }
+  .foot .channels a:hover{background:var(--green);color:var(--bg)}
+  .foot-bottom{
+    margin-top:36px;padding-top:18px;border-top:2px dashed var(--rule);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    font-family:var(--mono);font-size:11px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px){
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .portrait{justify-self:start;max-width:300px}
+    .feat{padding:64px 0 56px}
+    .feat-head{gap:20px;margin-bottom:32px}
+    .feat-icon{width:64px;height:64px}
+    .feat-icon .px{width:38px;height:38px}
+    .feat-image{margin-bottom:36px}
+    .feat-body{grid-template-columns:1fr;gap:32px}
+    .grid-9{grid-template-columns:repeat(2,1fr)}
+    .nav ul a:nth-child(n+4){display:none}
+  }
+  @media (max-width: 600px){
+    .grid-9{grid-template-columns:1fr}
+    h1.name{font-size:48px}
+    .foot-grid{grid-template-columns:1fr}
+    .feat::before{font-size:180px;right:-30px}
+  }
+</style>
 </head>
 <body>
 
-<!-- ============ TOP STICKY BAR ============ -->
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="topbar-col left"><span>LUKA GRUEV</span></div>
-    <div class="topbar-col center"><span>2026 · Champaign, IL</span></div>
-    <div class="topbar-col right">
-      <a href="#hero">ABOUT</a>
-      <span class="dot"></span>
-      <a href="#featured">PROJECTS</a>
-      <span class="dot"></span>
-      <a href="#footer">CONTACT</a>
-    </div>
+<!-- ============ PIXEL ICON DEFS ============ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+
+  <!-- ROCKET -->
+  <symbol id="i-rocket" viewBox="0 0 16 16">
+    <rect x="7" y="1" width="2" height="1"/>
+    <rect x="6" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/>
+    <rect x="5" y="3" width="1" height="5"/><rect x="10" y="3" width="1" height="5"/>
+    <rect x="7" y="5" width="2" height="2"/>
+    <rect x="4" y="8" width="2" height="1"/><rect x="10" y="8" width="2" height="1"/>
+    <rect x="4" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/>
+    <rect x="3" y="10" width="2" height="1"/><rect x="11" y="10" width="2" height="1"/>
+    <rect x="2" y="11" width="2" height="1"/><rect x="12" y="11" width="2" height="1"/>
+    <rect x="2" y="12" width="1" height="1"/><rect x="13" y="12" width="1" height="1"/>
+    <rect x="3" y="13" width="10" height="1"/>
+    <rect x="5" y="14" width="2" height="1"/><rect x="9" y="14" width="2" height="1"/>
+    <rect x="6" y="15" width="4" height="1"/>
+  </symbol>
+
+  <!-- 3D PRINTER -->
+  <symbol id="i-printer" viewBox="0 0 16 16">
+    <rect x="2" y="2" width="12" height="1"/>
+    <rect x="2" y="2" width="1" height="11"/>
+    <rect x="13" y="2" width="1" height="11"/>
+    <rect x="2" y="12" width="12" height="1"/>
+    <rect x="3" y="4" width="10" height="1"/>
+    <rect x="6" y="6" width="4" height="1"/>
+    <rect x="5" y="7" width="6" height="1"/>
+    <rect x="5" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/>
+    <rect x="6" y="9" width="4" height="1"/>
+    <rect x="2" y="13" width="3" height="1"/><rect x="11" y="13" width="3" height="1"/>
+  </symbol>
+
+  <!-- LED / SOUND-REACTIVE BULB -->
+  <symbol id="i-bulb" viewBox="0 0 16 16">
+    <rect x="6" y="1" width="4" height="1"/>
+    <rect x="4" y="2" width="2" height="1"/><rect x="10" y="2" width="2" height="1"/>
+    <rect x="3" y="3" width="1" height="2"/><rect x="12" y="3" width="1" height="2"/>
+    <rect x="3" y="5" width="1" height="3"/><rect x="12" y="5" width="1" height="3"/>
+    <rect x="4" y="8" width="2" height="2"/><rect x="10" y="8" width="2" height="2"/>
+    <rect x="5" y="10" width="6" height="1"/>
+    <rect x="6" y="11" width="4" height="1"/>
+    <rect x="6" y="12" width="4" height="1"/>
+    <rect x="7" y="13" width="2" height="1"/>
+    <!-- light rays -->
+    <rect x="0" y="6" width="2" height="1"/><rect x="14" y="6" width="2" height="1"/>
+    <rect x="1" y="2" width="1" height="1"/><rect x="14" y="2" width="1" height="1"/>
+  </symbol>
+
+  <!-- ROBOT -->
+  <symbol id="i-robot" viewBox="0 0 16 16">
+    <rect x="7" y="0" width="2" height="2"/>
+    <rect x="6" y="2" width="4" height="1"/>
+    <rect x="3" y="3" width="10" height="1"/>
+    <rect x="3" y="3" width="1" height="6"/><rect x="12" y="3" width="1" height="6"/>
+    <rect x="5" y="5" width="2" height="2"/><rect x="9" y="5" width="2" height="2"/>
+    <rect x="6" y="9" width="4" height="1"/>
+    <rect x="3" y="9" width="10" height="1"/>
+    <rect x="2" y="10" width="2" height="4"/><rect x="12" y="10" width="2" height="4"/>
+    <rect x="4" y="10" width="8" height="1"/>
+    <rect x="4" y="14" width="8" height="1"/>
+    <rect x="5" y="15" width="2" height="1"/><rect x="9" y="15" width="2" height="1"/>
+  </symbol>
+
+  <!-- ANTENNA / RADIO -->
+  <symbol id="i-radio" viewBox="0 0 16 16">
+    <rect x="7" y="1" width="2" height="2"/>
+    <rect x="6" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/>
+    <rect x="5" y="4" width="1" height="2"/><rect x="10" y="4" width="1" height="2"/>
+    <rect x="4" y="5" width="1" height="3"/><rect x="11" y="5" width="1" height="3"/>
+    <rect x="3" y="6" width="1" height="4"/><rect x="12" y="6" width="1" height="4"/>
+    <rect x="2" y="7" width="1" height="5"/><rect x="13" y="7" width="1" height="5"/>
+    <rect x="7" y="3" width="2" height="9"/>
+    <rect x="5" y="13" width="6" height="1"/>
+    <rect x="6" y="14" width="4" height="1"/>
+  </symbol>
+
+  <!-- SOUND WAVE / EQ -->
+  <symbol id="i-wave" viewBox="0 0 16 16">
+    <rect x="1" y="6" width="1" height="4"/>
+    <rect x="3" y="4" width="1" height="8"/>
+    <rect x="5" y="2" width="1" height="12"/>
+    <rect x="7" y="5" width="1" height="6"/>
+    <rect x="9" y="1" width="1" height="14"/>
+    <rect x="11" y="4" width="1" height="8"/>
+    <rect x="13" y="6" width="1" height="4"/>
+  </symbol>
+
+  <!-- TEST TUBE -->
+  <symbol id="i-tube" viewBox="0 0 16 16">
+    <rect x="5" y="1" width="6" height="1"/>
+    <rect x="6" y="2" width="1" height="11"/>
+    <rect x="9" y="2" width="1" height="11"/>
+    <rect x="6" y="9" width="3" height="1"/>
+    <rect x="6" y="11" width="3" height="1"/>
+    <rect x="6" y="13" width="1" height="1"/><rect x="9" y="13" width="1" height="1"/>
+    <rect x="7" y="14" width="2" height="1"/>
+  </symbol>
+
+  <!-- DICE -->
+  <symbol id="i-dice" viewBox="0 0 16 16">
+    <rect x="2" y="2" width="12" height="1"/>
+    <rect x="2" y="13" width="12" height="1"/>
+    <rect x="2" y="2" width="1" height="12"/>
+    <rect x="13" y="2" width="1" height="12"/>
+    <rect x="5" y="5" width="2" height="2"/>
+    <rect x="9" y="5" width="2" height="2"/>
+    <rect x="7" y="7" width="2" height="2"/>
+    <rect x="5" y="9" width="2" height="2"/>
+    <rect x="9" y="9" width="2" height="2"/>
+  </symbol>
+
+  <!-- SINE / SIM -->
+  <symbol id="i-sine" viewBox="0 0 16 16">
+    <rect x="0" y="8" width="1" height="1"/>
+    <rect x="1" y="7" width="1" height="1"/>
+    <rect x="2" y="6" width="1" height="1"/>
+    <rect x="3" y="5" width="1" height="1"/>
+    <rect x="4" y="4" width="2" height="1"/>
+    <rect x="6" y="5" width="1" height="1"/>
+    <rect x="7" y="6" width="1" height="1"/>
+    <rect x="8" y="7" width="1" height="2"/>
+    <rect x="9" y="9" width="1" height="1"/>
+    <rect x="10" y="10" width="1" height="1"/>
+    <rect x="11" y="11" width="2" height="1"/>
+    <rect x="13" y="10" width="1" height="1"/>
+    <rect x="14" y="9" width="1" height="1"/>
+    <rect x="15" y="8" width="1" height="1"/>
+  </symbol>
+
+  <!-- ARROW RIGHT -->
+  <symbol id="i-arrow" viewBox="0 0 16 16">
+    <rect x="2" y="7" width="9" height="2"/>
+    <rect x="9" y="5" width="2" height="2"/>
+    <rect x="11" y="6" width="2" height="4"/>
+    <rect x="9" y="9" width="2" height="2"/>
+  </symbol>
+
+  <!-- ARROW UP-RIGHT -->
+  <symbol id="i-out" viewBox="0 0 16 16">
+    <rect x="6" y="3" width="6" height="1"/>
+    <rect x="11" y="3" width="1" height="6"/>
+    <rect x="3" y="11" width="1" height="1"/>
+    <rect x="4" y="10" width="1" height="1"/>
+    <rect x="5" y="9" width="1" height="1"/>
+    <rect x="6" y="8" width="1" height="1"/>
+    <rect x="7" y="7" width="1" height="1"/>
+    <rect x="8" y="6" width="1" height="1"/>
+    <rect x="9" y="5" width="1" height="1"/>
+    <rect x="10" y="4" width="1" height="1"/>
+  </symbol>
+
+  <!-- ENVELOPE / MAIL -->
+  <symbol id="i-mail" viewBox="0 0 16 16">
+    <rect x="1" y="3" width="14" height="1"/>
+    <rect x="1" y="3" width="1" height="10"/>
+    <rect x="14" y="3" width="1" height="10"/>
+    <rect x="1" y="12" width="14" height="1"/>
+    <rect x="2" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/>
+    <rect x="3" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
+    <rect x="4" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/>
+    <rect x="5" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/>
+    <rect x="6" y="8" width="4" height="1"/>
+  </symbol>
+
+  <!-- STAR (decorative) -->
+  <symbol id="i-star" viewBox="0 0 16 16">
+    <rect x="7" y="0" width="2" height="3"/>
+    <rect x="0" y="7" width="3" height="2"/>
+    <rect x="13" y="7" width="3" height="2"/>
+    <rect x="7" y="13" width="2" height="3"/>
+    <rect x="6" y="6" width="4" height="4"/>
+    <rect x="5" y="7" width="6" height="2"/>
+    <rect x="7" y="5" width="2" height="6"/>
+    <rect x="3" y="3" width="2" height="2"/><rect x="11" y="3" width="2" height="2"/>
+    <rect x="3" y="11" width="2" height="2"/><rect x="11" y="11" width="2" height="2"/>
+  </symbol>
+
+  <!-- HEART -->
+  <symbol id="i-heart" viewBox="0 0 16 16">
+    <rect x="2" y="3" width="4" height="1"/><rect x="10" y="3" width="4" height="1"/>
+    <rect x="1" y="4" width="1" height="3"/><rect x="14" y="4" width="1" height="3"/>
+    <rect x="6" y="4" width="4" height="1"/>
+    <rect x="2" y="7" width="2" height="1"/><rect x="12" y="7" width="2" height="1"/>
+    <rect x="3" y="8" width="2" height="1"/><rect x="11" y="8" width="2" height="1"/>
+    <rect x="4" y="9" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/>
+    <rect x="5" y="10" width="2" height="1"/><rect x="9" y="10" width="2" height="1"/>
+    <rect x="6" y="11" width="4" height="1"/>
+    <rect x="7" y="12" width="2" height="1"/>
+  </symbol>
+
+  <!-- USER / PERSON -->
+  <symbol id="i-user" viewBox="0 0 16 16">
+    <rect x="6" y="2" width="4" height="1"/>
+    <rect x="5" y="3" width="6" height="4"/>
+    <rect x="4" y="9" width="8" height="1"/>
+    <rect x="3" y="10" width="10" height="5"/>
+    <rect x="2" y="13" width="12" height="2"/>
+  </symbol>
+
+  <!-- BOLT / SKILL -->
+  <symbol id="i-bolt" viewBox="0 0 16 16">
+    <rect x="7" y="1" width="4" height="1"/>
+    <rect x="6" y="2" width="4" height="1"/>
+    <rect x="5" y="3" width="4" height="1"/>
+    <rect x="4" y="4" width="4" height="1"/>
+    <rect x="3" y="5" width="5" height="1"/>
+    <rect x="6" y="6" width="6" height="1"/>
+    <rect x="6" y="7" width="6" height="1"/>
+    <rect x="5" y="8" width="4" height="1"/>
+    <rect x="4" y="9" width="4" height="1"/>
+    <rect x="3" y="10" width="4" height="1"/>
+    <rect x="2" y="11" width="4" height="1"/>
+  </symbol>
+
+  <!-- CHIP / EMBEDDED -->
+  <symbol id="i-chip" viewBox="0 0 16 16">
+    <rect x="3" y="3" width="10" height="1"/>
+    <rect x="3" y="12" width="10" height="1"/>
+    <rect x="3" y="3" width="1" height="10"/>
+    <rect x="12" y="3" width="1" height="10"/>
+    <rect x="6" y="6" width="4" height="4"/>
+    <rect x="2" y="5" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="2" y="11" width="1" height="1"/>
+    <rect x="13" y="5" width="1" height="1"/><rect x="13" y="8" width="1" height="1"/><rect x="13" y="11" width="1" height="1"/>
+    <rect x="5" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
+    <rect x="5" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="10" y="13" width="1" height="1"/>
+  </symbol>
+
+  <!-- HAMMER (build) -->
+  <symbol id="i-build" viewBox="0 0 16 16">
+    <rect x="7" y="2" width="6" height="1"/>
+    <rect x="6" y="3" width="8" height="3"/>
+    <rect x="9" y="6" width="2" height="1"/>
+    <rect x="8" y="7" width="2" height="1"/>
+    <rect x="7" y="8" width="2" height="1"/>
+    <rect x="6" y="9" width="2" height="1"/>
+    <rect x="5" y="10" width="2" height="1"/>
+    <rect x="4" y="11" width="2" height="1"/>
+    <rect x="3" y="12" width="2" height="1"/>
+    <rect x="2" y="13" width="2" height="1"/>
+  </symbol>
+
+</svg>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="#hero">
+      <svg class="px"><use href="#i-rocket"/></svg>
+      LUKA·GRUEV
+    </a>
+    <ul>
+      <li><a href="#hero"><span class="num">01</span>about</a></li>
+      <li><a href="#featured"><span class="num">02</span>work</a></li>
+      <li><a href="#more"><span class="num">03</span>archive</a></li>
+      <li><a href="#contact"><span class="num">04</span>contact</a></li>
+    </ul>
   </div>
 </header>
 
-<!-- ============ HERO + ABOUT (combined intro) ============ -->
+<!-- ============ HERO ============ -->
 <section class="hero" id="hero">
-  <div class="hero-grid">
-    <div class="hero-left">
-      <p class="eyebrow"><span class="dot-fill"></span>Hardware · Software · Design</p>
-      <h1 class="hero-name">
-        <span class="line-wrap"><span class="line-inner">LUKA</span></span>
-        <span class="line-wrap"><span class="line-inner">GRUEV</span></span>
+  <div class="wrap hero-grid">
+    <div>
+
+
+      <h1 class="name">
+        <span class="row">LUKA</span>
+        <span class="row"><span class="accent">GRUEV</span></span>
       </h1>
 
-      <p class="hero-lede">
-        I'm a high schooler in Champaign, Illinois attending University Laboratory High School 
-        I love engeneering, design, and building stuff. I have a particular passion for aerospace, robotics, and embedded electronics!
-      </p>
-      <p class="hero-lede secondary">
-        Come take a look at some of my projects! From rockets, 3D printers, Applications, and more im trying to broaden my skillset and learn more!
-      </p>
+      <p class="hero-tag">&gt; My Portfolio <span class="cursor"></span></p>
 
-      <ul class="about-list">
-        <li><span class="k">Based</span><span class="v">Champaign, IL</span></li>
-        <li><span class="k">Email</span><span class="v"><a href="mailto:lukaeg@illinois.edu">lukaeg@illinois.edu</a></span></li>
-        <li><span class="k">Skills</span><span class="v">KiCad · C/C++ · MATLAB · Onshape · Fusion 360 · Python · Autodesk CFD · Simulink </span></li>
-      </ul>
+      <p class="hero-lede type">High-schooler in Champaign, Illinois at University Laboratory High School. Engineering, design, and building stuff — particular passion for aerospace, robotics, and embedded electronics.</p>
+      <p class="hero-lede s type">Kicad · Autodesk · Matlab · C++ · Java · HTML · Onshape · Fusion 360 · Simulink · DFM · CFD · FEA · Git · Github</p>
 
-      <div class="hero-cta-row">
-        <a class="btn-primary" href="#featured">SEE THE WORK <span class="arrow">→</span></a>
-        <a class="btn-ghost" href="mailto:lukaeg@illinois.edu">CONTACT ME</a>
+      <div class="hero-stats">
+        <span class="stat">
+          <svg class="px"><use href="#i-build"/></svg>
+          <span class="n">12+</span>
+          <span class="l">cool builds</span>
+        </span>
+        <span class="stat">
+          <svg class="px"><use href="#i-bolt"/></svg>
+          <span class="n">5+</span>
+          <span class="l">years</span>
+        </span>
       </div>
-      <div class="hero-meta-row">
-        <div><span class="meta-num">12+</span><span class="meta-lbl">HIGH LEVEL Projects</span></div>
-        <div><span class="meta-num">5+</span><span class="meta-lbl">Years of Experience</span></div>
+
+      <div class="cta-row">
+        <a class="btn fill" href="#featured">
+          SEE THE WORK
+          <svg class="px"><use href="#i-arrow"/></svg>
+        </a>
+        <a class="btn" href="mailto:lukaeg@illinois.edu">
+          <svg class="px"><use href="#i-mail"/></svg>
+          CONTACT
+        </a>
       </div>
     </div>
 
-    <div class="hero-right">
-      <figure class="hero-image-wrap">
-        <img src="assets/me/luka.jpg" alt="Luka Gruev with a rocket at sunset" loading="eager">
-      </figure>
+    <div class="portrait">
+      <span class="tag">CREW · 01</span>
+      <img src="assets/me/luka.jpg" alt="Luka Gruev with a rocket at sunset">
+      <div class="meta">
+        <span>Champaign, IL</span>
+        <span>40.11°N</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ FEATURED PROJECTS ============ -->
-<div id="featured"></div>
-
-<!-- ---------- 1. KROCKET ---------- -->
-<section class="feature" data-side="left">
-  <div class="feature-head">
-    <span class="feature-num">01 / 03</span>
-    <h2 class="feature-title">KROCKET V1</h2>
-    <p class="feature-sub">Actively Controlled Rocket · 2026 (WIP)</p>
-  </div>
-
-  <div class="feature-hero">
-    <img src="assets/01/Top.jpg" alt="KRocket V1 hero">
-  </div>
-
-  <div class="feature-body">
-    <div class="feature-text">
-      <p class="lead">
-        After my earlier rockets, I wanted to push further and build one that
-        actively stabilizes itself in flight. I did this by simulating the rocket's physics in MATLAB 
-        and then adding a PID loop. Currently the rocket is still in progress but im nearing development
-        and planning on flying by the end of 2026!
-      </p>
-      <p>
-        The pcb rocket runs on a coustoum flight controler with an STM32F7 with barometers, IMUs, GNSS, magnetometers, and
-        LoRa telemetry. All parts of the PCB was desgined by me in Kicad and assembled by JLCPCB.
-      </p>
-    </div>
-    <div class="feature-meta-col">
-      <ul class="feature-meta">
-        <li><span>Year</span><strong>2026</strong></li>
-        <li><span>Stack</span><strong>C++ · KiCad · MATLAB · CFD</strong></li>
-        <li><span>Status</span><strong>In progress</strong></li>
-      </ul>
-      <button class="btn-details" data-project-trigger="krocket">VIEW DETAILS <span class="arrow">→</span></button>
-    </div>
-  </div>
-
-  <div class="gallery">
-    <figure class="g-tall"><img src="assets/01/PCB.jpg" alt="KRocket PCB stack"></figure>
-    <figure><img src="assets/01/matlab.png" alt="MATLAB tuning"></figure>
-    <figure><img src="assets/01/CFD.png" alt="CFD simulation"></figure>
-    <figure><img src="assets/01/top-2.jpg" alt="KRocket airframe top view"></figure>
-    <figure class="g-wide"><img src="assets/01/cfd-2.png" alt="CFD detail"></figure>
-    <figure><img src="assets/01/PCB-2.jpg" alt="PCB stack detail"></figure>
-    <figure><img src="assets/01/matlab-3.png" alt="MATLAB plot"></figure>
-    <figure><img src="assets/01/PCB-4.png" alt="PCB layout"></figure>
-    <figure><img src="assets/01/cfd-3.png" alt="CFD pressure field"></figure>
-    <figure><img src="assets/01/top-3.jpg" alt="KRocket angle view"></figure>
-  </div>
-</section>
-
-<!-- ---------- 2. LUKSER ---------- -->
-<section class="feature" data-side="right">
-  <div class="feature-head">
-    <span class="feature-num">02 / 03</span>
-    <h2 class="feature-title">LUKSER</h2>
-    <p class="feature-sub">A Ground-Up 3D Printer · 2023</p>
-  </div>
-
-  <div class="feature-hero">
-    <img src="assets/02/front.jpg" alt="LUKSER 3D printer">
-  </div>
-
-  <div class="feature-body">
-    <div class="feature-text">
-      <p class="lead">
-        After printing on an Ender 3 and SV06+, I wanted to design a printer
-        of my own one that was fast and reliable from the ground up. Every
-        choice from the frame to the hotend was mine to make.
-      </p>
-      <p>
-        The motion system uses seven independent motors (most printers use
-        three). The hotend is custom-machined with high-wattage nichrome
-        wiring, pushing volumetric flow up to 100 mm³/s roughly 8× a stock
-        Ender 3. The frame is 1.5" aluminum extrusion, ~30 lbs, dead solid.
-      </p>
-    </div>
-    <div class="feature-meta-col">
-      <ul class="feature-meta">
-        <li><span>Year</span><strong>2023</strong></li>
-        <li><span>Stack</span><strong>CAD · Linux · DFM</strong></li>
-        <li><span>Status</span><strong>Complete</strong></li>
-      </ul>
-      <button class="btn-details" data-project-trigger="lukser">VIEW DETAILS <span class="arrow">→</span></button>
-    </div>
-  </div>
-
-  <div class="gallery">
-    <figure class="g-tall"><img src="assets/02/Frame.jpg" alt="LUKSER frame"></figure>
-    <figure><img src="assets/02/aluminum.png" alt="Aluminum stepper mount"></figure>
-    <figure><img src="assets/02/Hotend.jpg" alt="Custom hotend"></figure>
-    <figure><img src="assets/02/gantry (1).jpg" alt="Gantry"></figure>
-    <figure class="g-wide"><img src="assets/02/Print.png" alt="Print result"></figure>
-    <figure><img src="assets/02/Hotend-2.png" alt="Hotend detail"></figure>
-    <figure><img src="assets/02/aluminum-3.png" alt="Aluminum part detail"></figure>
-    <figure><img src="assets/02/gantry (2).jpg" alt="Gantry view"></figure>
-    <figure><img src="assets/02/Frame-2.jpg" alt="Frame detail"></figure>
-    <figure><img src="assets/02/BuildPhoto-3.png" alt="Build photo"></figure>
-  </div>
-</section>
-
-<!-- ---------- 3. RGSOUND ---------- -->
-<section class="feature" data-side="left">
-  <div class="feature-head">
-    <span class="feature-num">03 / 03</span>
-    <h2 class="feature-title">RGSOUND</h2>
-    <p class="feature-sub">Custom LED Controller, Reactive to Sound · 2025</p>
-  </div>
-
-  <div class="feature-hero">
-    <img src="assets/05/desk.jpg" alt="RGSOUND on desk">
-  </div>
-
-  <div class="feature-body">
-    <div class="feature-text">
-      <p class="lead">
-        I built RGSOUND because I wanted a clean, custom way to drive the
-        LED strips on my desk every off-the-shelf controller I tried was
-        either too limited, too bulky, or too expensive.
-      </p>
-      <p>
-        Custom PCB designed from scratch in KiCad. ESP32 with onboard antenna,
-        driving WS2812B addressables and reacting to audio in real time. The
-        layout went through a few passes to land on a two-layer board to keep
-        cost down. Running daily on my desk and the inspiration for CAPSOUND.
-      </p>
-    </div>
-    <div class="feature-meta-col">
-      <ul class="feature-meta">
-        <li><span>Year</span><strong>2025</strong></li>
-        <li><span>Stack</span><strong>C++ · KiCad · ESP32</strong></li>
-        <li><span>Status</span><strong>Complete</strong></li>
-      </ul>
-      <button class="btn-details" data-project-trigger="rgsound">VIEW DETAILS <span class="arrow">→</span></button>
-    </div>
-  </div>
-
-  <div class="gallery">
-    <figure class="g-tall"><img src="assets/05/build.jpg" alt="RGSOUND PCB build"></figure>
-    <figure><img src="assets/05/build-2.jpg" alt="Build detail"></figure>
-    <figure><img src="assets/05/desk-2.jpg" alt="On desk"></figure>
-    <figure><img src="assets/05/cover.jpg" alt="RGSOUND cover"></figure>
-    <figure class="g-wide"><img src="assets/05/desk-3.jpg" alt="Desk install"></figure>
-    <figure><img src="assets/05/build-3.jpg" alt="Build closeup"></figure>
-  </div>
-</section>
-
-<!-- ============ OTHER PROJECTS ACCORDION ============ -->
-<!-- ============ MORE PROJECTS GALLERY GRID ============ -->
-<section class="more" id="more">
-  <div class="more-head">
-    <span class="rule"></span>
-    <h2>More projects</h2>
-    <span class="more-count">9 builds</span>
-  </div>
-
-  <div class="proj-grid">
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">03</span>
-        <img src="assets/03/cover.png" alt="LOCKET" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">LOCKET</h3>
-        <p class="proj-meta">Hardware &middot; Software &mdash; 2024 &middot; Complete</p>
-        <p class="proj-desc">A high-power rocket that reached 4,000 feet, armed with custom avionics, ground-to-air telemetry, and an onboard camera.</p>
-        <p class="proj-stack">C++ &middot; KiCad &middot; MATLAB</p>
-        <button class="btn-details" data-project-trigger="locket">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">04</span>
-        <img src="assets/04/cover.png" alt="BatBot V2" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">BatBot V2</h3>
-        <p class="proj-meta">Hardware &middot; Software &mdash; 2023 &middot; Complete</p>
-        <p class="proj-desc">A combat robot built from scratch &mdash; custom electronics, custom chassis, machined for mass and toughness.</p>
-        <p class="proj-stack">C++ &middot; KiCad</p>
-        <button class="btn-details" data-project-trigger="batbot">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">06</span>
-        <img src="assets/06/cover.png" alt="Uni High Rocket" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">Uni High Rocket</h3>
-        <p class="proj-meta">Hardware &middot; Software &mdash; 2024 &middot; Complete</p>
-        <p class="proj-desc">A small smart rocket built to learn the basics of avionics before scaling up to LOCKET and KROCKET. Designed and flown.</p>
-        <p class="proj-stack">C++ &middot; KiCad</p>
-        <button class="btn-details" data-project-trigger="unihigh">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">07</span>
-        <img src="assets/07/cover.png" alt="LoRase" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">LoRase</h3>
-        <p class="proj-meta">Hardware &middot; Software &mdash; 2025 &middot; Complete</p>
-        <p class="proj-desc">A long-range telemetry system built around the LoRa radio standard &mdash; kilometer-class link budgets at low power.</p>
-        <p class="proj-stack">C++ &middot; KiCad &middot; LoRa</p>
-        <button class="btn-details" data-project-trigger="lorase">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">08</span>
-        <img src="assets/08/cover.jpg" alt="LG06+" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">LG06+</h3>
-        <p class="proj-meta">Hardware &middot; Software &mdash; 2023 &middot; Complete</p>
-        <p class="proj-desc">My modified Sovol SV06+ &mdash; a long list of upgrades pushing the stock machine on speed, quality, and reliability.</p>
-        <p class="proj-stack">C++ &middot; CAD</p>
-        <button class="btn-details" data-project-trigger="lg06plus">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">09</span>
-        <img src="assets/09/cover.png" alt="CAPSOUND" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">CAPSOUND</h3>
-        <p class="proj-meta">Software &mdash; 2026 &middot; Complete</p>
-        <p class="proj-desc">An open-source audio visualization tool that renders real-time visuals driven by the FFT of any audio input.</p>
-        <p class="proj-stack">JavaScript</p>
-        <button class="btn-details" data-project-trigger="capsound">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">10</span>
-        <img src="assets/10/cover.jpg" alt="CTestTube" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">CTestTube</h3>
-        <p class="proj-meta">Hardware &mdash; 2025 &middot; Complete</p>
-        <p class="proj-desc">3D-printed test tube racks and lab accessories &mdash; functional, sterilizable, and a fraction of off-the-shelf cost.</p>
-        <p class="proj-stack">CAD</p>
-        <button class="btn-details" data-project-trigger="ctesttube">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">11</span>
-        <img src="assets/11/cover.png" alt="Dice Design" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">Dice Design</h3>
-        <p class="proj-meta">Software &mdash; 2026 &middot; Complete</p>
-        <p class="proj-desc">A web-based tool for designing custom dice &mdash; configure geometry, faces, and materials, then export a 3D-printable model.</p>
-        <p class="proj-stack">JavaScript &middot; Three.js</p>
-        <button class="btn-details" data-project-trigger="dice">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-    <article class="proj-card">
-      <div class="proj-image">
-        <span class="proj-id">12</span>
-        <img src="assets/12/cover.png" alt="LightSim" loading="lazy">
-      </div>
-      <div class="proj-body">
-        <h3 class="proj-title">LightSim</h3>
-        <p class="proj-meta">Software &mdash; 2026 &middot; Complete</p>
-        <p class="proj-desc">A lightweight fin force simulator for rockets &mdash; quick predictions of side force and pitching moment without a full CFD pass.</p>
-        <p class="proj-stack">Python</p>
-        <button class="btn-details" data-project-trigger="lightsim">VIEW DETAILS <span class="arrow">→</span></button>
-      </div>
-    </article>
-
-  </div>
-</section>
-
-
-<!-- ============ FOOTER CARD ============ -->
-<section class="footer-card" id="footer">
-  <a class="footer-link" href="mailto:lukaeg@illinois.edu">
-    <div class="footer-row top">
-      <h2 class="big-line"><span class="line">And now</span></h2>
-      <h2 class="big-line"><span class="line">the next build.</span></h2>
-    </div>
-    <p class="footer-copy">
-      I'm always excited to connect with engineers; I'm open to volunteering, mentorship, employment opportunities, or just a chat about some of my projects!
-    </p>
-    <p class="footer-copy small">
-      lukaeg@illinois.edu · @luka.makesstuff · linkedin/luka-gruev
-    </p>
-    <div class="footer-cta">
-      <span>Contact Me</span>
-      <span class="arrow">→</span>
-    </div>
-  </a>
-  <div class="footer-meta">
-    <span>40.1106° N</span>
-    <span>−88.2073° W</span>
-    <span>Champaign, IL</span>
-    <span id="clock">12:00 AM</span>
-  </div>
-</section>
-
-<!-- ============ PROJECT DETAIL MODAL ============ -->
-<div class="modal" id="proj-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal-backdrop" data-modal-close></div>
-  <div class="modal-card" role="document">
-    <button class="modal-close" data-modal-close aria-label="Close">&times;</button>
-    <div class="modal-content"></div>
+<!-- ============ FEATURED ============ -->
+<div class="wrap" id="featured">
+  <div class="div-row">
+    <h2><svg class="px" style="width:14px;height:14px;margin-right:6px"><use href="#i-star"/></svg> FEATURED</h2>
+    <span class="dots"></span>
+    <span class="count">3 builds</span>
   </div>
 </div>
 
-<!-- ============ IMAGE LIGHTBOX ============ -->
-<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
-  <button class="lightbox-close" data-lightbox-close aria-label="Close">&times;</button>
-  <div class="lightbox-stage">
-    <img class="lightbox-img" src="" alt="">
+<!-- KROCKET -->
+<article class="feat" data-num="01">
+  <div class="wrap">
+    <header class="feat-head">
+      <div class="feat-icon"><svg class="px"><use href="#i-rocket"/></svg></div>
+      <div class="feat-titles">
+        <p class="feat-num">// 01 OF 03 · FEATURED</p>
+        <h3 class="feat-title">KROCKET V1</h3>
+        <p class="feat-sub">actively controlled rocket · 2026 (WIP)</p>
+      </div>
+    </header>
+
+    <div class="feat-image">
+      <img src="assets/01/Top.jpg" alt="KRocket V1">
+    </div>
+
+    <div class="feat-body">
+      <div class="feat-copy">
+        <p class="type">A rocket that actively stabilizes itself in flight. Two-PCB avionics, a Kalman filter, custom fin actuators — every part designed and built from scratch.</p>
+        <p class="s type">It runs on an STM32F7 with barometers, IMUs, GNSS, magnetometers, and LoRa telemetry. PID gains were tuned in MATLAB against a Simulink 6-DOF model and cross-checked with CFD before any flight hardware was cut.</p>
+        <a class="feat-link" href="#">view details <svg class="px"><use href="#i-arrow"/></svg></a>
+      </div>
+      <aside class="feat-meta-panel">
+        <h4>// SPECS</h4>
+        <ul>
+          <li><span>Year</span><strong>2026</strong></li>
+          <li><span>MCU</span><strong>STM32F7</strong></li>
+          <li><span>Stack</span><strong>C++ · KiCad</strong></li>
+          <li><span>Tools</span><strong>MATLAB · CFD</strong></li>
+          <li><span>Telemetry</span><strong>LoRa</strong></li>
+          <li><span>Status</span><strong class="wip">WIP</strong></li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="gallery-section">
+      <div class="gallery-head">
+        <h4>// BUILD GALLERY</h4>
+        <span class="dots"></span>
+        <span class="count">17 frames</span>
+      </div>
+      <div class="gallery-grid">
+        <figure class="huge"><img src="assets/01/PCB.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/matlab.png" alt="" loading="lazy"></figure>
+        <figure class="tall"><img src="assets/01/CFD.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/top-2.jpg" alt="" loading="lazy"></figure>
+        <figure class="wide"><img src="assets/01/cfd-2.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/PCB-2.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/matlab-3.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/PCB-4.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/cfd-3.png" alt="" loading="lazy"></figure>
+        <figure class="wide"><img src="assets/01/top-3.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/matlab-2.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/matlab-4.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/PCB-5.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/PCB-6.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/pcb-3.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/pcb-7.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/01/top-4.jpg" alt="" loading="lazy"></figure>
+      </div>
+    </div>
   </div>
-  <span class="lightbox-hint">Click image to zoom · Esc to close</span>
+</article>
+
+<!-- LUKSER -->
+<article class="feat" data-num="02">
+  <div class="wrap">
+    <header class="feat-head">
+      <div class="feat-icon"><svg class="px"><use href="#i-printer"/></svg></div>
+      <div class="feat-titles">
+        <p class="feat-num">// 02 OF 03 · FEATURED</p>
+        <h3 class="feat-title">LUKSER</h3>
+        <p class="feat-sub">a ground-up 3D printer · 2023</p>
+      </div>
+    </header>
+
+    <div class="feat-image">
+      <img src="assets/02/front.jpg" alt="LUKSER 3D printer">
+    </div>
+
+    <div class="feat-body">
+      <div class="feat-copy">
+        <p class="type">After printing on an Ender 3 and SV06+, I designed a printer of my own — fast and reliable from the ground up. Every choice, from the frame to the hotend, was mine to make.</p>
+        <p class="s type">Seven independent motors. A custom-machined hotend pushing volumetric flow up to ~100 mm³/s, roughly 8× a stock Ender 3. The frame is 1.5" aluminum extrusion, ~30 lbs, dead solid.</p>
+        <a class="feat-link" href="#">view details <svg class="px"><use href="#i-arrow"/></svg></a>
+      </div>
+      <aside class="feat-meta-panel">
+        <h4>// SPECS</h4>
+        <ul>
+          <li><span>Year</span><strong>2023</strong></li>
+          <li><span>Motors</span><strong>7 (vs 3 stock)</strong></li>
+          <li><span>Flow</span><strong>~100 mm³/s</strong></li>
+          <li><span>Frame</span><strong>1.5" Al · ~30 lbs</strong></li>
+          <li><span>Stack</span><strong>CAD · Linux · DFM</strong></li>
+          <li><span>Status</span><strong class="done">DONE</strong></li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="gallery-section">
+      <div class="gallery-head">
+        <h4>// BUILD GALLERY</h4>
+        <span class="dots"></span>
+        <span class="count">16 frames · 2 videos</span>
+      </div>
+      <div class="gallery-grid">
+        <figure class="huge"><img src="assets/02/Frame.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/aluminum.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/Hotend.jpg" alt="" loading="lazy"></figure>
+        <figure class="wide"><img src="assets/02/gantry (1).jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/Print.png" alt="" loading="lazy"></figure>
+        <figure class="video tall">
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="assets/02/Video.mp4" type="video/mp4">
+          </video>
+        </figure>
+        <figure><img src="assets/02/Hotend-2.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/aluminum-3.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/gantry (2).jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/Frame-2.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/BuildPhoto-3.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/gantry (3).jpg" alt="" loading="lazy"></figure>
+        <figure class="video wide">
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="assets/02/gantry (1).MOV" type="video/mp4">
+          </video>
+        </figure>
+        <figure><img src="assets/02/aluminum-2.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/aluminum-4.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/aluminum-5.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/IMG_2587.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/IMG_3136.jpg" alt="" loading="lazy"></figure>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- RGSOUND -->
+<article class="feat" data-num="03">
+  <div class="wrap">
+    <header class="feat-head">
+      <div class="feat-icon"><svg class="px"><use href="#i-bulb"/></svg></div>
+      <div class="feat-titles">
+        <p class="feat-num">// 03 OF 03 · FEATURED</p>
+        <h3 class="feat-title">RGSOUND</h3>
+        <p class="feat-sub">sound-reactive LED controller · 2025</p>
+      </div>
+    </header>
+
+    <div class="feat-image">
+      <video autoplay muted loop playsinline preload="metadata" aria-label="CAPSOUND reactive LEDs in action">
+        <source src="assets/09/example.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="feat-body">
+      <div class="feat-copy">
+        <p class="type">Off-the-shelf LED controllers were too limited, too bulky, or too expensive. So I built my own — clean, custom, and exactly the right shape for my desk.</p>
+        <p class="s type">Custom KiCad PCB. ESP32 with onboard antenna, driving WS2812B addressables and reacting to audio in real time. The layout went through a few passes to land on a two-layer board to keep cost down. Running daily on my desk.</p>
+        <a class="feat-link" href="#">view details <svg class="px"><use href="#i-arrow"/></svg></a>
+      </div>
+      <aside class="feat-meta-panel">
+        <h4>// SPECS</h4>
+        <ul>
+          <li><span>Year</span><strong>2025</strong></li>
+          <li><span>MCU</span><strong>ESP32</strong></li>
+          <li><span>LEDs</span><strong>WS2812B</strong></li>
+          <li><span>Layers</span><strong>2</strong></li>
+          <li><span>Stack</span><strong>C++ · KiCad</strong></li>
+          <li><span>Status</span><strong class="done">DONE</strong></li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="gallery-section">
+      <div class="gallery-head">
+        <h4>// BUILD GALLERY</h4>
+        <span class="dots"></span>
+        <span class="count">6 frames</span>
+      </div>
+      <div class="gallery-grid">
+        <figure class="wide"><img src="assets/05/build.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/05/build-2.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/05/desk-2.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/05/cover.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/05/desk-3.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="assets/05/build-3.jpg" alt="" loading="lazy"></figure>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ MORE PROJECTS ============ -->
+<div class="wrap" id="more" style="margin-top:24px">
+  <div class="div-row">
+    <h2><svg class="px" style="width:14px;height:14px;margin-right:6px"><use href="#i-chip"/></svg> ARCHIVE</h2>
+    <span class="dots"></span>
+    <span class="count">9 builds</span>
+  </div>
+
+  <div class="grid-9">
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-rocket"/></svg></div>
+        <div><p class="id">// 03</p><h3>LOCKET</h3></div>
+      </div>
+      <p class="desc">High-power rocket · 4,000 ft. Custom avionics, ground-to-air telemetry, onboard camera.</p>
+      <div class="meta"><span>2024 · DONE</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-robot"/></svg></div>
+        <div><p class="id">// 04</p><h3>BATBOT V2</h3></div>
+      </div>
+      <p class="desc">Combat robot built from scratch — custom electronics, custom chassis, machined for mass and toughness.</p>
+      <div class="meta"><span>2023 · DONE</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-rocket"/></svg></div>
+        <div><p class="id">// 06</p><h3>UNI HIGH</h3></div>
+      </div>
+      <p class="desc">Small smart rocket built to learn the basics of avionics before scaling up to LOCKET and KROCKET.</p>
+      <div class="meta"><span>2024 · DONE</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-radio"/></svg></div>
+        <div><p class="id">// 07</p><h3>LORASE</h3></div>
+      </div>
+      <p class="desc">Long-range telemetry built around the LoRa radio — kilometer-class link budgets at low power.</p>
+      <div class="meta"><span>2025 · DONE</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-printer"/></svg></div>
+        <div><p class="id">// 08</p><h3>LG06+</h3></div>
+      </div>
+      <p class="desc">Modified Sovol SV06+ — a long list of upgrades pushing the stock machine on speed, quality, and reliability.</p>
+      <div class="meta"><span>2023 · DONE</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-wave"/></svg></div>
+        <div><p class="id">// 09</p><h3>CAPSOUND</h3></div>
+      </div>
+      <p class="desc">Open-source audio visualization tool that renders real-time visuals from the FFT of any audio input.</p>
+      <div class="meta"><span>2026 · DONE</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-tube"/></svg></div>
+        <div><p class="id">// 10</p><h3>CTESTTUBE</h3></div>
+      </div>
+      <p class="desc">3D-printed test tube racks and lab accessories — functional, sterilizable, and a fraction of off-the-shelf cost.</p>
+      <div class="meta"><span>2025 · DONE</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-dice"/></svg></div>
+        <div><p class="id">// 11</p><h3>DICE</h3></div>
+      </div>
+      <p class="desc">A web-based tool for designing custom dice — configure geometry, faces, materials, then export a 3D-printable model.</p>
+      <div class="meta"><span>2026 · DONE</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card" href="#">
+      <div class="head">
+        <div class="ico"><svg class="px"><use href="#i-sine"/></svg></div>
+        <div><p class="id">// 12</p><h3>LIGHTSIM</h3></div>
+      </div>
+      <p class="desc">Lightweight fin-force simulator for rockets — quick predictions of side force and pitching moment without a full CFD pass.</p>
+      <div class="meta"><span>2026 · DONE</span><span class="arrow">→</span></div>
+    </a>
+  </div>
 </div>
 
-<script src="script.js?v=lightbox-2"></script>
+<!-- ============ FOOTER ============ -->
+<footer class="foot" id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-icon"><svg class="px"><use href="#i-mail"/></svg></div>
+      <div>
+        <h2>and now —<br>the next <span class="accent">build.</span></h2>
+        <p>After five years of building things — soldering, machining, simulating, debugging, occasionally setting something on fire — I've learned the only real shortcut is starting. The sim is never quite the rocket. The first PCB never works. None of it has stopped me yet.</p>
+        <p>I'm always excited to connect with engineers — open to volunteering, mentorship, employment opportunities, or just a chat about some of my projects. If you build things and want to talk to someone who builds things, reach out.</p>
+        <p class="s">There's always a next build. I'd love to hear what you're working on too.</p>
+        <div class="channels">
+          <a href="mailto:lukaeg@illinois.edu">lukaeg@illinois.edu</a>
+          <a href="#">@luka.makesstuff <svg class="px" style="width:10px;height:10px"><use href="#i-out"/></svg></a>
+          <a href="#">linkedin/luka-gruev <svg class="px" style="width:10px;height:10px"><use href="#i-out"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>40°N · −88°W · CHAMPAIGN, IL</span>
+      <span>BUILT BY LUKA GRUEV · 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll-triggered animations: type body text fast, fade-in everything else.
+  (() => {
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 1) Tag more body text so it gets typed: card descriptions + footer paragraphs.
+    document.querySelectorAll('.card .desc, .foot-grid p').forEach(el => {
+      el.classList.add('type');
+    });
+
+    // 2) Tag everything else that should fade-up on scroll-in.
+    const fxSelectors = [
+      // hero
+      '.eyebrow', '.hero-grid h1.name', '.hero-tag',
+      '.hero-stats .stat', '.cta-row .btn', '.portrait',
+      // section dividers
+      '.div-row',
+      // featured sections
+      '.feat-icon', '.feat-titles', '.feat-image',
+      '.feat-link', '.feat-meta-panel',
+      // archive cards
+      '.card',
+      // footer
+      '.foot-icon', '.foot h2', '.foot .channels a', '.foot-bottom > span'
+    ];
+    document.querySelectorAll(fxSelectors.join(',')).forEach(el => {
+      if (!el.classList.contains('type')) el.classList.add('fx');
+    });
+
+    if (reduceMotion){
+      document.querySelectorAll('.fx').forEach(el => el.classList.add('in'));
+      return;
+    }
+
+    // 3) Pre-measure typed elements (prevents layout shift) and clear text.
+    const typers = document.querySelectorAll('.type');
+    typers.forEach(el => {
+      const r = el.getBoundingClientRect();
+      el.style.minHeight = r.height + 'px';
+      el.dataset.text = el.textContent;
+      el.textContent = '';
+    });
+
+    const SPEED = 5;  // ms per character — fast
+
+    const typeOne = (el) => {
+      const text = el.dataset.text || '';
+      el.classList.add('typing');
+      let i = 0;
+      const tick = () => {
+        i++;
+        el.textContent = text.slice(0, i);
+        if (i >= text.length){
+          el.classList.remove('typing');
+          el.style.minHeight = '';
+          return;
+        }
+        setTimeout(tick, SPEED);
+      };
+      tick();
+    };
+
+    // 4) Single observer drives both typing AND fading. Visible siblings cascade.
+    const STAGGER = 55;  // ms between staggered elements
+    const io = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      visible.forEach((entry, idx) => {
+        const el = entry.target;
+        if (el.dataset.shown === '1') return;
+        el.dataset.shown = '1';
+        const delay = idx * STAGGER;
+        setTimeout(() => {
+          if (el.classList.contains('type')){
+            typeOne(el);
+          } else {
+            el.classList.add('in');
+          }
+        }, delay);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -4% 0px' });
+
+    document.querySelectorAll('.fx, .type').forEach(el => io.observe(el));
+  })();
+</script>
+
 </body>
 </html>
