@@ -88,14 +88,13 @@
     <div class="feature-text">
       <p class="lead">
         After my earlier rockets, I wanted to push further and build one that
-        actively stabilizes itself in flight. Every part from the two-PCB
-        avionics stack to the Kalman filter to the custom fin actuators was
-        designed and built from scratch.
+        actively stabilizes itself in flight. I did this by simulating the rocket's physics in MATLAB 
+        and then adding a PID loop. Currently the rocket is still in progress but im nearing development
+        and planning on flying by the end of 2026!
       </p>
       <p>
-        It runs on an STM32F7 with barometers, IMUs, GNSS, magnetometers, and
-        LoRa telemetry. I tuned the PID gains in MATLAB against a Simulink
-        6-DOF model cross-checked with CFD before any flight hardware was cut.
+        The pcb rocket runs on a coustoum flight controler with an STM32F7 with barometers, IMUs, GNSS, magnetometers, and
+        LoRa telemetry. All parts of the PCB was desgined by me in Kicad and assembled by JLCPCB.
       </p>
     </div>
     <div class="feature-meta-col">
