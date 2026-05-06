@@ -171,7 +171,8 @@
     position:relative;border:3px solid var(--ink);padding:10px;background:var(--bg-2);
     box-shadow:10px 10px 0 var(--green);margin-bottom:56px;
   }
-  .feat-image img{
+  .feat-image img,
+  .feat-image video{
     width:100%;aspect-ratio:16/8;object-fit:cover;display:block;
     border:1px solid var(--ink);filter:contrast(1.05) brightness(1.02);
   }
@@ -716,7 +717,6 @@
 
     <div class="feat-image">
       <img src="../assets/01/Top.jpg" alt="KRocket V1">
-      <p class="cap"><span>./assets/01/Top.jpg</span><span>HERO · 16:8</span></p>
     </div>
 
     <div class="feat-body">
@@ -781,7 +781,6 @@
 
     <div class="feat-image">
       <img src="../assets/02/front.jpg" alt="LUKSER 3D printer">
-      <p class="cap"><span>./assets/02/front.jpg</span><span>HERO · 16:8</span></p>
     </div>
 
     <div class="feat-body">
@@ -854,8 +853,9 @@
     </header>
 
     <div class="feat-image">
-      <img src="../assets/05/desk.jpg" alt="RGSOUND on desk">
-      <p class="cap"><span>./assets/05/desk.jpg</span><span>HERO · 16:8</span></p>
+      <video autoplay muted loop playsinline preload="metadata" aria-label="CAPSOUND reactive LEDs in action">
+        <source src="../assets/09/example.mp4" type="video/mp4">
+      </video>
     </div>
 
     <div class="feat-body">
