@@ -114,12 +114,21 @@
     border:3px solid var(--ink);background:var(--bg-2);padding:14px;
     box-shadow:8px 8px 0 var(--green);
   }
+  .portrait-inner{
+    position:relative;
+    width:100%;aspect-ratio:4/5;
+    border:2px solid var(--ink);
+    overflow:hidden;
+    background:var(--bg);
+  }
   .portrait img{
-    width:100%;aspect-ratio:4/5;object-fit:cover;
+    width:100%;height:100%;object-fit:cover;
     image-rendering:auto;
     display:block;
     filter:contrast(1.05) brightness(1.02);
-    border:2px solid var(--ink);
+    transform:translate3d(0,0,0) scale(1.12);
+    transform-origin:center;
+    will-change:transform;
   }
   .portrait .tag{
     position:absolute;top:-12px;left:14px;background:var(--ink);color:var(--bg);
@@ -687,7 +696,9 @@
 
     <div class="portrait">
       <span class="tag">CREW · 01</span>
-      <img src="assets/me/luka.jpg" alt="Luka Gruev with a rocket at sunset">
+      <div class="portrait-inner">
+        <img src="assets/me/luka.jpg" alt="Luka Gruev with a rocket at sunset">
+      </div>
       <div class="meta">
         <span>Champaign, IL</span>
         <span>40.11°N</span>
@@ -1099,6 +1110,65 @@
     }, { threshold: 0.15, rootMargin: '0px 0px -4% 0px' });
 
     document.querySelectorAll('.fx, .type').forEach(el => io.observe(el));
+  })();
+
+  // Hero portrait: intro zoom + mouse parallax (ported from the original site).
+  // Single rAF loop drives both the intro dolly (scale 1.22 -> 1.12) and the
+  // live cursor-follow translate (up to MAX_SHIFT px in any direction).
+  (() => {
+    const heroImg = document.querySelector('.portrait-inner img');
+    if (!heroImg) return;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const MAX_SHIFT  = 18;     // px max parallax in any direction
+    const EASE       = 0.10;   // higher = snappier mouse follow
+    const INTRO_MS   = 4000;   // intro dolly duration
+    const SCALE_FROM = 1.22;   // starting zoom
+    const SCALE_TO   = 1.12;   // resting zoom (must be > 1 for shift headroom)
+
+    let tx = 0, ty = 0;        // target parallax offset (px)
+    let cx = 0, cy = 0;        // current (eased) parallax offset (px)
+    let introStart = 0;
+    let raf = 0;
+
+    const easeOutCubic = (p) => 1 - Math.pow(1 - p, 3);
+
+    const tick = (now) => {
+      if (!introStart) introStart = now;
+      const introP = Math.min(1, (now - introStart) / INTRO_MS);
+      const scl = reduceMotion
+        ? SCALE_TO
+        : SCALE_FROM + (SCALE_TO - SCALE_FROM) * easeOutCubic(introP);
+
+      cx += (tx - cx) * EASE;
+      cy += (ty - cy) * EASE;
+
+      heroImg.style.transform =
+        `translate3d(${cx.toFixed(2)}px, ${cy.toFixed(2)}px, 0) scale(${scl.toFixed(4)})`;
+
+      const settling = Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05;
+      if (introP < 1 || settling) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        raf = 0;
+      }
+    };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+
+    // Always run at least once so the intro dolly plays.
+    kick();
+
+    if (!reduceMotion) {
+      window.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX / window.innerWidth)  - 0.5;  // -0.5 .. 0.5
+        const ny = (e.clientY / window.innerHeight) - 0.5;
+        tx = nx * 2 * MAX_SHIFT;
+        ty = ny * 2 * MAX_SHIFT;
+        kick();
+      }, { passive: true });
+
+      document.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
+    }
   })();
 </script>
 
