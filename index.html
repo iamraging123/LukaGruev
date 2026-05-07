@@ -290,6 +290,19 @@
     padding:3px 7px;
     pointer-events:none;
   }
+  .gallery-grid figure figcaption.vid-cap{
+    position:absolute;bottom:9px;left:9px;right:9px;z-index:3;
+    font-family:var(--pixel);font-size:9px;letter-spacing:.04em;line-height:1.5;
+    color:var(--ink);background:var(--bg);
+    border:1px solid var(--ink);
+    padding:6px 8px;text-transform:uppercase;
+    pointer-events:none;
+  }
+  .gallery-grid figure figcaption.vid-cap mark{
+    color:var(--bg);background:var(--green);
+    padding:1px 4px;margin:0 1px;
+    font-weight:400;
+  }
   @media (max-width: 900px){
     .gallery-grid{grid-template-columns:repeat(3, 1fr);grid-auto-rows:160px}
   }
@@ -754,19 +767,31 @@
       <div class="gallery-head">
         <h4>// BUILD GALLERY</h4>
         <span class="dots"></span>
-        <span class="count">17 frames</span>
+        <span class="count">18 frames · 2 videos</span>
       </div>
       <div class="gallery-grid">
         <figure class="huge"><img src="assets/01/PCB.jpg" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/matlab.png" alt="" loading="lazy"></figure>
         <figure class="tall"><img src="assets/01/CFD.png" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/top-2.jpg" alt="" loading="lazy"></figure>
+        <figure class="video" style="grid-column:span 2;grid-row:span 4">
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="assets/01/VideoDemo.mp4" type="video/mp4">
+          </video>
+          <figcaption class="vid-cap">Instagram reel I made with <mark>10k+ views</mark></figcaption>
+        </figure>
         <figure class="wide"><img src="assets/01/cfd-2.png" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/PCB-2.jpg" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/matlab-3.png" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/PCB-4.png" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/cfd-3.png" alt="" loading="lazy"></figure>
-        <figure class="wide"><img src="assets/01/top-3.jpg" alt="" loading="lazy"></figure>
+        <figure class="tall"><img src="assets/01/top-3.jpg" alt="" loading="lazy"></figure>
+        <figure class="video tall">
+          <video autoplay muted loop playsinline preload="metadata" data-loop-at="15"
+                 ontimeupdate="if(this.currentTime>=parseFloat(this.dataset.loopAt))this.currentTime=0">
+            <source src="assets/01/VideoDemo2.mp4" type="video/mp4">
+          </video>
+        </figure>
         <figure><img src="assets/01/matlab-2.png" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/matlab-4.png" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/PCB-5.png" alt="" loading="lazy"></figure>
@@ -774,6 +799,7 @@
         <figure><img src="assets/01/pcb-3.png" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/pcb-7.png" alt="" loading="lazy"></figure>
         <figure><img src="assets/01/top-4.jpg" alt="" loading="lazy"></figure>
+        <figure style="grid-column:span 3"><img src="assets/01/top-4.png" alt="" loading="lazy"></figure>
       </div>
     </div>
   </div>
@@ -818,7 +844,7 @@
       <div class="gallery-head">
         <h4>// BUILD GALLERY</h4>
         <span class="dots"></span>
-        <span class="count">16 frames · 2 videos</span>
+        <span class="count">18 frames · 2 videos</span>
       </div>
       <div class="gallery-grid">
         <figure class="huge"><img src="assets/02/Frame.jpg" alt="" loading="lazy"></figure>
@@ -836,8 +862,10 @@
         <figure><img src="assets/02/gantry (2).jpg" alt="" loading="lazy"></figure>
         <figure><img src="assets/02/Frame-2.jpg" alt="" loading="lazy"></figure>
         <figure><img src="assets/02/BuildPhoto-3.png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/MoreBuildPhotos (3).png" alt="" loading="lazy"></figure>
+        <figure><img src="assets/02/MoreBuildPhotos (4).png" alt="" loading="lazy"></figure>
         <figure><img src="assets/02/gantry (3).jpg" alt="" loading="lazy"></figure>
-        <figure class="video wide">
+        <figure class="video huge">
           <video autoplay muted loop playsinline preload="metadata">
             <source src="assets/02/gantry (1).MOV" type="video/mp4">
           </video>
