@@ -7,10 +7,17 @@ Thumbs.db
 .idea/
 
 # Unused source media — not referenced by the site, ~150 MB of extras.
-# If you later embed a clip, force-add it: `git add -f assets/.../foo.mp4`
+# Videos embedded in the site are whitelisted below.
 *.mp4
 *.MP4
 *.mov
 *.MOV
 *.HEIC
 *.heic
+
+# Whitelist videos actually used in the site (keep in sync with HTML/JS refs).
+!assets/01/demo-01.mp4
+!assets/01/demo-02.mp4
+!assets/02/gantry-01.mov
+!assets/02/video-01.mp4
+!assets/09/example-01.mp4

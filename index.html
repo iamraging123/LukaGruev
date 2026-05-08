@@ -420,27 +420,37 @@
     position:relative;
     width:100%;height:100%;
   }
+  /* Each slide locks at its own X-position based on --idx (0..11), set by JS.
+     Spread is centered on viewport: leftmost slide at -X, rightmost at +X.
+     Z-index ramps with --idx so later slides land on top of earlier ones. */
   .slide{
+    --offset: calc((var(--idx, 0) - 5.5) * 2.4vw);
     position:absolute;inset:0;
     display:flex;flex-direction:column;
     align-items:center;justify-content:center;
     padding:clamp(20px,3vh,40px);
     text-decoration:none;color:inherit;
     opacity:0;
-    transform:scale(.94);
-    transition:opacity .35s ease, transform .45s cubic-bezier(.6,.05,.3,1);
+    transform:translateX(var(--offset)) scale(.92);
+    transition:opacity .45s ease, transform .55s cubic-bezier(.6,.05,.3,1);
     pointer-events:none;
+    z-index:calc(var(--idx, 0) + 1);
     will-change:opacity, transform;
   }
-  .slide.is-active{
+  /* A slide stays revealed once you've scrolled past its threshold —
+     previously-revealed cards remain visible behind the active one. */
+  .slide.is-revealed{
     opacity:1;
-    transform:scale(1);
+    transform:translateX(var(--offset)) scale(1);
+  }
+  /* Only the front-most (most recently revealed) slide is interactive. */
+  .slide.is-active{
     pointer-events:auto;
     cursor:pointer;
   }
   .slide-frame{
     position:relative;
-    width:clamp(320px,52vh,640px);
+    width:clamp(300px,48vh,580px);
     aspect-ratio:1/1;
     height:auto;
     border:3px solid var(--ink);
@@ -1342,6 +1352,10 @@
     const footCur = section.querySelector('.cur-foot');
     const bar = section.querySelector('.showcase-bar .bar');
 
+    // Stamp each slide with its index as a CSS variable so the stylesheet
+    // can compute its X-offset and z-index without per-slide rules.
+    slides.forEach((s, i) => s.style.setProperty('--idx', i));
+
     let lastIdx = -1;
     let raf = null;
     function update() {
@@ -1358,7 +1372,12 @@
       const idx = Math.min(slides.length - 1, Math.floor(progress * slides.length));
 
       if (idx !== lastIdx) {
-        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        // is-revealed = visible (this card and everything before it).
+        // is-active = front of the stack (only one at a time, clickable).
+        slides.forEach((s, i) => {
+          s.classList.toggle('is-revealed', i <= idx);
+          s.classList.toggle('is-active', i === idx);
+        });
         lastIdx = idx;
       }
 
@@ -1373,8 +1392,8 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
-    // Initialize: first slide active immediately so the section never shows blank.
-    slides[0].classList.add('is-active');
+    // Initialize: first slide visible immediately so the section never blanks.
+    slides[0].classList.add('is-revealed', 'is-active');
     lastIdx = 0;
     update();
   })();
