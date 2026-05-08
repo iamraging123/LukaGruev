@@ -385,7 +385,7 @@
   /* ============ SHOWCASE — scroll-hijacked horizontal shelf ============ */
   .showcase{
     position:relative;
-    height:calc(var(--slides,12) * 40vh);
+    height:calc(var(--slides,12) * 35vh);
     background:var(--bg);
     border-top:2px solid var(--ink);
     border-bottom:2px solid var(--ink);
@@ -417,35 +417,41 @@
   }
   .showcase-head .pages .cur{color:var(--green);font-family:var(--pixel);font-size:14px;margin-right:2px}
   .showcase-track{
-    display:flex;
-    align-items:center;
-    height:100%;
-    width:max-content;
-    will-change:transform;
+    position:relative;
+    width:100%;height:100%;
   }
   .slide{
-    flex:0 0 38vw;
-    height:100%;
+    position:absolute;inset:0;
     display:flex;flex-direction:column;
     align-items:center;justify-content:center;
-    padding:clamp(20px,3vh,40px) clamp(4px,0.5vw,10px);
-    cursor:pointer;
+    padding:clamp(20px,3vh,40px);
     text-decoration:none;color:inherit;
+    opacity:0;
+    transform:scale(.94);
+    transition:opacity .35s ease, transform .45s cubic-bezier(.6,.05,.3,1);
+    pointer-events:none;
+    will-change:opacity, transform;
+  }
+  .slide.is-active{
+    opacity:1;
+    transform:scale(1);
+    pointer-events:auto;
+    cursor:pointer;
   }
   .slide-frame{
     position:relative;
-    width:clamp(320px,37vw,560px);
+    width:clamp(320px,52vh,640px);
     aspect-ratio:1/1;
     height:auto;
     border:3px solid var(--ink);
     background:var(--bg);
-    box-shadow:10px 10px 0 var(--green);
+    box-shadow:12px 12px 0 var(--green);
     overflow:hidden;flex-shrink:0;
     transition:transform .25s ease, box-shadow .25s ease;
   }
-  .slide:hover .slide-frame{
+  .slide.is-active:hover .slide-frame{
     transform:translate(-3px,-3px);
-    box-shadow:13px 13px 0 var(--green);
+    box-shadow:15px 15px 0 var(--green);
   }
   .slide-frame img{
     width:100%;height:100%;display:block;
@@ -453,33 +459,36 @@
     filter:contrast(1.05) brightness(1.02);
     pointer-events:none;
   }
-  /* caption baked into the bottom of the image — reverse contrast */
+  /* caption sits directly on the image — text is the live inverse of the
+     pixels behind it via mix-blend-mode:difference. White text + difference
+     = the exact color complement of whatever is below, so the type stays
+     legible across bright, dark, and mid-toned regions of the cover. */
   .slide-meta{
     position:absolute;left:0;right:0;bottom:0;z-index:2;
-    background:var(--ink);color:var(--bg);
-    padding:14px 16px 16px;
+    padding:18px 22px 22px;
     display:flex;flex-direction:column;
     gap:2px;
-    border-top:2px solid var(--bg);
+    color:#fff;
+    mix-blend-mode:difference;
+    pointer-events:none;
     font-family:var(--mono);
-    transition:transform .25s ease;
+    isolation:isolate;
   }
   .slide-meta .num{
-    font-family:var(--pixel);font-size:9px;
-    color:var(--bg);letter-spacing:.08em;
-    opacity:.55;
+    font-family:var(--pixel);font-size:13px;
+    color:#fff;letter-spacing:.06em;
   }
   .slide-meta h3{
     font-family:var(--pixel);font-weight:700;
-    font-size:clamp(15px,1.65vw,22px);
+    font-size:clamp(26px,3vw,44px);
     line-height:1;letter-spacing:0;
-    color:var(--bg);margin:2px 0 0;
+    color:#fff;margin:6px 0 0;
   }
   .slide-meta .sub{
-    font-size:10px;line-height:1.3;
-    color:var(--bg);opacity:.7;
+    font-size:13px;line-height:1.3;
+    color:#fff;
     text-transform:uppercase;letter-spacing:.04em;
-    margin-top:4px;
+    margin-top:8px;
   }
   .showcase-foot{
     display:flex;align-items:center;gap:18px;
@@ -518,11 +527,13 @@
   .showcase-bar .ticks span:first-child,
   .showcase-bar .ticks span:last-child{opacity:0}
   @media (max-width:900px){
-    .showcase{height:calc(var(--slides,12) * 55vh)}
-    .slide{flex-basis:84vw;padding:20px 6px}
+    .showcase{height:calc(var(--slides,12) * 40vh)}
+    .slide{padding:20px}
     .slide-frame{width:min(82vw, 460px)}
-    .slide-meta{padding:14px 16px 16px}
-    .slide-meta h3{font-size:clamp(20px,5vw,30px)}
+    .slide-meta{padding:18px 22px 20px}
+    .slide-meta .num{font-size:12px}
+    .slide-meta h3{font-size:clamp(24px,6.5vw,40px)}
+    .slide-meta .sub{font-size:12px}
   }
   .foot-grid{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:start;margin-bottom:80px}
   .foot-icon{width:96px;height:96px;background:var(--bg);border:3px solid var(--ink);display:grid;place-items:center;color:var(--ink);box-shadow:8px 8px 0 var(--green);flex-shrink:0}
@@ -1314,11 +1325,12 @@
 </footer>
 
 <script>
-  // === Showcase scroll hijack ===
+  // === Showcase step slideshow ===
   // The .showcase section is taller than one viewport. Inside it, a sticky
-  // container locks to 100vh while the user scrolls vertically. We translate
-  // the .showcase-track horizontally based on scroll progress through the
-  // section, turning vertical scroll into horizontal travel across 12 slides.
+  // container pins to 100vh while the user scrolls. As scroll progresses, we
+  // toggle .is-active between the 12 stacked slides — each one fades+scales
+  // into place when its segment of progress is reached. No horizontal motion;
+  // the slides cross-fade in stacked layers.
   (() => {
     const section = document.getElementById('showcase');
     const track = document.getElementById('showcase-track');
@@ -1330,6 +1342,7 @@
     const footCur = section.querySelector('.cur-foot');
     const bar = section.querySelector('.showcase-bar .bar');
 
+    let lastIdx = -1;
     let raf = null;
     function update() {
       raf = null;
@@ -1340,10 +1353,15 @@
       let progress = -rect.top / totalScroll;
       progress = Math.max(0, Math.min(1, progress));
 
-      const distance = track.scrollWidth - window.innerWidth;
-      track.style.transform = `translate3d(${(-progress * distance).toFixed(1)}px, 0, 0)`;
+      // Each slide owns an equal segment of progress. Floor maps progress
+      // into a 0..N-1 slot; clamp so progress=1.0 still resolves to last.
+      const idx = Math.min(slides.length - 1, Math.floor(progress * slides.length));
 
-      const idx = Math.min(slides.length - 1, Math.round(progress * (slides.length - 1)));
+      if (idx !== lastIdx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        lastIdx = idx;
+      }
+
       const txt = String(idx + 1).padStart(2, '0');
       if (headCur && headCur.textContent !== txt) headCur.textContent = txt;
       if (footCur && footCur.textContent !== txt) footCur.textContent = txt;
@@ -1355,6 +1373,9 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
+    // Initialize: first slide active immediately so the section never shows blank.
+    slides[0].classList.add('is-active');
+    lastIdx = 0;
     update();
   })();
 
