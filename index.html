@@ -634,9 +634,145 @@
     .foot-coords .coord-num.r{text-align:left}
     .foot-coords .coord-cross{justify-self:start}
   }
+
+  /* ============ BOOT LOADER ============ */
+  body.loading{overflow:hidden}
+  .loader{
+    position:fixed;inset:0;z-index:9999;
+    background:var(--bg);
+    display:grid;place-items:center;
+    font-family:var(--mono);color:var(--ink);
+    transition:opacity .55s ease, visibility .55s ease;
+  }
+  .loader.done{opacity:0;visibility:hidden;pointer-events:none}
+  /* CRT scanlines + faint signal noise on top of the dark bg */
+  .loader::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:repeating-linear-gradient(
+      to bottom,
+      rgba(245,240,230,.035) 0 1px,
+      transparent 1px 3px
+    );
+    z-index:1;
+  }
+  .loader::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.55) 100%);
+    z-index:1;
+  }
+  .loader-frame{
+    position:relative;z-index:2;
+    width:min(720px, 92vw);
+    border:2px solid var(--ink);
+    background:var(--bg-2);
+    padding:22px 26px 24px;
+    box-shadow:8px 8px 0 var(--green);
+  }
+  .loader-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    font-family:var(--pixel);font-size:11px;
+    margin-bottom:14px;letter-spacing:0;
+  }
+  .loader-head .tag{
+    background:var(--green);color:var(--bg);
+    padding:4px 9px;
+  }
+  .loader-head .name{color:var(--ink-dim);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;font-size:10px}
+  .loader-head .ts{margin-left:auto;color:var(--ink-mute);font-family:var(--mono);font-size:10px;letter-spacing:.04em}
+  .loader-rule{
+    height:6px;
+    background-image:repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 12px);
+    opacity:.45;margin-bottom:18px;
+  }
+  .loader-log{
+    font-family:var(--term);font-size:18px;line-height:1.45;
+    color:var(--green);
+    margin:0 0 18px;
+    min-height:240px;
+    white-space:pre-wrap;
+    text-shadow:0 0 6px rgba(174,232,154,.4);
+  }
+  .loader-log .ok{color:var(--green)}
+  .loader-log .dim{color:var(--ink-mute)}
+  .loader-log .ink{color:var(--ink)}
+  .loader-progress{
+    display:flex;align-items:center;gap:14px;
+    font-family:var(--pixel);font-size:11px;
+    padding-top:14px;border-top:1px solid var(--rule);
+  }
+  .loader-progress .pct{color:var(--green);font-size:14px;min-width:42px}
+  .loader-progress .pct-label{color:var(--ink-dim);font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+  .loader-bar{
+    flex:1;height:8px;
+    border:1px solid var(--ink);background:var(--bg);
+    position:relative;overflow:hidden;
+  }
+  .loader-bar .fill{
+    position:absolute;inset:0;width:0%;
+    background:var(--green);
+    transition:width .35s ease;
+  }
+  .loader-bar .fill::after{
+    content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(
+      to right,
+      transparent 0 4px,
+      rgba(0,0,0,.25) 4px 5px
+    );
+  }
+  .loader-progress .status{
+    color:var(--ink);min-width:88px;text-align:right;letter-spacing:.04em;
+  }
+  .loader-blink{
+    margin-top:14px;
+    font-family:var(--pixel);font-size:11px;
+    color:var(--ink-dim);letter-spacing:.04em;
+    opacity:0;transition:opacity .4s ease;
+    display:flex;align-items:center;gap:8px;
+  }
+  .loader-blink.show{opacity:1}
+  .loader-blink .cursor{
+    display:inline-block;width:10px;height:14px;
+    background:var(--green);
+    box-shadow:0 0 6px rgba(174,232,154,.55);
+    animation:loader-blink 1s steps(2) infinite;
+    vertical-align:-2px;
+  }
+  @keyframes loader-blink{50%{opacity:0}}
+  @media (max-width:600px){
+    .loader-frame{padding:18px 18px 20px}
+    .loader-log{font-size:15px;min-height:200px}
+    .loader-head .ts{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .loader-log{text-shadow:none}
+    .loader-bar .fill{transition:none}
+  }
 </style>
 </head>
-<body>
+<body class="loading">
+
+<!-- ============ BOOT LOADER ============ -->
+<div id="loader" class="loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+  <div class="loader-frame">
+    <div class="loader-head">
+      <span class="tag">[BOOT_SEQ]</span>
+      <span class="name">LUKA GRUEV / SELECTED WORK</span>
+      <span class="ts" id="boot-ts">—:—:—</span>
+    </div>
+    <div class="loader-rule"></div>
+    <pre class="loader-log" id="boot-log"></pre>
+    <div class="loader-progress">
+      <span class="pct" id="boot-pct">000</span>
+      <span class="pct-label">%</span>
+      <div class="loader-bar"><div class="fill" id="boot-bar"></div></div>
+      <span class="status" id="boot-status">INIT</span>
+    </div>
+    <div class="loader-blink" id="boot-ready">
+      <span class="cursor"></span> READY · CLICK OR PRESS ANY KEY TO ENTER
+    </div>
+  </div>
+</div>
 
 <!-- ============ PIXEL ICON DEFS ============ -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
@@ -1335,6 +1471,120 @@
 </footer>
 
 <script>
+  // === Boot loader ===
+  // Plays a terminal-style boot sequence on first paint. Lines type out with
+  // jittered delays for a real-keyboard feel, the progress bar ramps in sync,
+  // and the live clock in the header advances each frame. Once the boot
+  // sequence finishes AND window 'load' has fired (everything cached + paint
+  // settled), the READY prompt appears and any click/keypress dismisses it.
+  // Auto-dismisses after a short post-ready window if the user is idle.
+  (() => {
+    const loader = document.getElementById('loader');
+    if (!loader) return;
+    const log = document.getElementById('boot-log');
+    const pct = document.getElementById('boot-pct');
+    const bar = document.getElementById('boot-bar');
+    const status = document.getElementById('boot-status');
+    const ready = document.getElementById('boot-ready');
+    const ts = document.getElementById('boot-ts');
+
+    // Live clock in header
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function tick(){
+      const d = new Date();
+      ts.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+    tick();
+    const clockId = setInterval(tick, 1000);
+
+    // Boot script — varied delays + ascii so it doesn't feel mechanical
+    const lines = [
+      { text: '> initializing portfolio.system',                  status: 'INIT',     delay: 220 },
+      { text: '> mounting /assets ............... [ ok ]',        status: 'MOUNT',    delay: 180 },
+      { text: '> loading hardware.modules ....... [ ok ]',        status: 'HARDWARE', delay: 260 },
+      { text: '> loading software.stack ......... [ ok ]',        status: 'SOFTWARE', delay: 220 },
+      { text: '> indexing 12 builds ............. [ ok ]',        status: 'ARCHIVE',  delay: 220 },
+      { text: '> compiling display.glyphs ....... [ ok ]',        status: 'DISPLAY',  delay: 200 },
+      { text: '> spinning up modal.engine ....... [ ok ]',        status: 'ENGINE',   delay: 200 },
+      { text: '> calibrating green.accent ....... [ ok ]',        status: 'COLOR',    delay: 180 },
+      { text: '> all systems nominal.', cls: 'ok',                status: 'NOMINAL',  delay: 320 },
+      { text: '',                                                  delay: 80 },
+      { text: 'lukagruev@portfolio:~$ ./run --year 2026', cls: 'ink', status: 'EXEC',  delay: 240 },
+    ];
+
+    let idx = 0;
+    let progress = 0;
+    let bootDone = false;
+    let pageLoaded = document.readyState === 'complete';
+
+    function appendLine(text, cls){
+      const span = document.createElement('span');
+      if (cls) span.className = cls;
+      span.textContent = text + '\n';
+      log.appendChild(span);
+    }
+
+    function rampTo(target){
+      const start = progress;
+      const t0 = performance.now();
+      const dur = 280;
+      function step(now){
+        const k = Math.min(1, (now - t0) / dur);
+        progress = start + (target - start) * k;
+        pct.textContent = String(Math.floor(progress)).padStart(3, '0');
+        bar.style.width = progress + '%';
+        if (k < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function next(){
+      if (idx >= lines.length){
+        bootDone = true;
+        rampTo(100);
+        status.textContent = 'READY';
+        tryFinish();
+        return;
+      }
+      const line = lines[idx++];
+      appendLine(line.text, line.cls || '');
+      if (line.status) status.textContent = line.status;
+      rampTo((idx / lines.length) * 100);
+      setTimeout(next, line.delay);
+    }
+
+    function tryFinish(){
+      if (!bootDone || !pageLoaded) return;
+      ready.classList.add('show');
+      // Auto-dismiss after a moment so the page reveals itself even if
+      // the visitor doesn't click. They can also press any key/click sooner.
+      setTimeout(dismiss, 1400);
+    }
+
+    let dismissed = false;
+    function dismiss(){
+      if (dismissed) return;
+      dismissed = true;
+      clearInterval(clockId);
+      loader.classList.add('done');
+      document.body.classList.remove('loading');
+      // Remove from DOM after the fade completes so it doesn't trap focus.
+      setTimeout(() => loader.remove(), 650);
+    }
+    document.addEventListener('click', () => { if (ready.classList.contains('show')) dismiss(); });
+    document.addEventListener('keydown', () => { if (ready.classList.contains('show')) dismiss(); });
+
+    if (pageLoaded){
+      // page is already cached; still want the boot to play, but we know
+      // the underlying site is ready whenever boot finishes.
+    } else {
+      window.addEventListener('load', () => { pageLoaded = true; tryFinish(); }, { once: true });
+    }
+
+    // Kick off
+    next();
+  })();
+
   // === Showcase step slideshow ===
   // The .showcase section is taller than one viewport. Inside it, a sticky
   // container pins to 100vh while the user scrolls. As scroll progresses, we
