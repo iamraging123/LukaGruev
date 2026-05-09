@@ -631,76 +631,40 @@
     .foot-coords .coord-cross{justify-self:start}
   }
 
-  /* ============ BOOT LOADER ============ */
+  /* ============ LOADING SCREEN ============ */
   body.loading{overflow:hidden}
   .loader{
     position:fixed;inset:0;z-index:9999;
     background:var(--bg);
     display:grid;place-items:center;
     font-family:var(--mono);color:var(--ink);
-    transition:opacity .55s ease, visibility .55s ease;
+    transition:opacity .5s ease, visibility .5s ease;
   }
   .loader.done{opacity:0;visibility:hidden;pointer-events:none}
-  /* CRT scanlines + faint signal noise on top of the dark bg */
+  /* faint scanline texture so the void doesn't read as a blank pause */
   .loader::before{
     content:"";position:absolute;inset:0;pointer-events:none;
     background-image:repeating-linear-gradient(
       to bottom,
-      rgba(245,240,230,.035) 0 1px,
+      rgba(245,240,230,.025) 0 1px,
       transparent 1px 3px
     );
-    z-index:1;
-  }
-  .loader::after{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.55) 100%);
-    z-index:1;
   }
   .loader-frame{
     position:relative;z-index:2;
-    width:min(720px, 92vw);
-    border:2px solid var(--ink);
-    background:var(--bg-2);
-    padding:22px 26px 24px;
-    box-shadow:8px 8px 0 var(--green);
+    width:min(440px, 86vw);
+    text-align:center;
   }
-  .loader-head{
-    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-    font-family:var(--pixel);font-size:11px;
-    margin-bottom:14px;letter-spacing:0;
-  }
-  .loader-head .tag{
-    background:var(--green);color:var(--bg);
-    padding:4px 9px;
-  }
-  .loader-head .name{color:var(--ink-dim);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;font-size:10px}
-  .loader-head .ts{margin-left:auto;color:var(--ink-mute);font-family:var(--mono);font-size:10px;letter-spacing:.04em}
-  .loader-rule{
-    height:6px;
-    background-image:repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 12px);
-    opacity:.45;margin-bottom:18px;
-  }
-  .loader-log{
-    font-family:var(--term);font-size:18px;line-height:1.45;
-    color:var(--green);
+  .loader-title{
+    font-family:var(--pixel);font-weight:700;
+    font-size:clamp(14px,1.6vw,18px);
+    color:var(--ink);letter-spacing:.04em;
     margin:0 0 18px;
-    min-height:240px;
-    white-space:pre-wrap;
-    text-shadow:0 0 6px rgba(174,232,154,.4);
   }
-  .loader-log .ok{color:var(--green)}
-  .loader-log .dim{color:var(--ink-mute)}
-  .loader-log .ink{color:var(--ink)}
-  .loader-progress{
-    display:flex;align-items:center;gap:14px;
-    font-family:var(--pixel);font-size:11px;
-    padding-top:14px;border-top:1px solid var(--rule);
-  }
-  .loader-progress .pct{color:var(--green);font-size:14px;min-width:42px}
-  .loader-progress .pct-label{color:var(--ink-dim);font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+  .loader-title .dim{color:var(--ink-mute);margin:0 6px}
   .loader-bar{
-    flex:1;height:8px;
-    border:1px solid var(--ink);background:var(--bg);
+    height:6px;
+    border:1px solid var(--ink);background:var(--bg-2);
     position:relative;overflow:hidden;
   }
   .loader-bar .fill{
@@ -708,39 +672,131 @@
     background:var(--green);
     transition:width .35s ease;
   }
-  .loader-bar .fill::after{
-    content:"";position:absolute;inset:0;
-    background-image:repeating-linear-gradient(
-      to right,
-      transparent 0 4px,
-      rgba(0,0,0,.25) 4px 5px
-    );
+  .loader-status{
+    margin:14px 0 0;
+    font-family:var(--mono);font-size:11px;
+    color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase;
+    display:flex;align-items:baseline;justify-content:center;gap:10px;
   }
-  .loader-progress .status{
-    color:var(--ink);min-width:88px;text-align:right;letter-spacing:.04em;
-  }
-  .loader-blink{
-    margin-top:14px;
-    font-family:var(--pixel);font-size:11px;
-    color:var(--ink-dim);letter-spacing:.04em;
-    opacity:0;transition:opacity .4s ease;
-    display:flex;align-items:center;gap:8px;
-  }
-  .loader-blink.show{opacity:1}
-  .loader-blink .cursor{
-    display:inline-block;width:10px;height:14px;
-    background:var(--green);
-    box-shadow:0 0 6px rgba(174,232,154,.55);
-    animation:loader-blink 1s steps(2) infinite;
-    vertical-align:-2px;
-  }
-  @keyframes loader-blink{50%{opacity:0}}
+  .loader-status .pct{font-family:var(--pixel);font-size:13px;color:var(--green);letter-spacing:.04em}
+  .loader-status .sep{color:var(--ink-mute)}
   @media (max-width:600px){
-    .loader-frame{padding:18px 18px 20px}
-    .loader-log{font-size:15px;min-height:200px}
-    .loader-head .ts{display:none}
+    .loader-frame{width:88vw}
+    .loader-title{font-size:13px}
+  }
+  /* ============ MEDIA LIGHTBOX ============ */
+  body.lightbox-open{overflow:hidden}
+  .lightbox{
+    position:fixed;inset:0;z-index:9000;
+    background:rgba(10,10,10,.96);
+    display:none;
+    font-family:var(--mono);
+    color:var(--ink);
+  }
+  .lightbox.open{display:block}
+  /* faint scanlines on backdrop — same CRT vibe as the boot loader */
+  .lightbox::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:repeating-linear-gradient(
+      to bottom,
+      rgba(245,240,230,.025) 0 1px,
+      transparent 1px 3px
+    );
+    z-index:1;
+  }
+  .lightbox-stage{
+    position:absolute;inset:54px 16px 44px 16px;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    cursor:grab;
+  }
+  .lightbox-stage.dragging{cursor:grabbing}
+  .lightbox-img,.lightbox-video{
+    max-width:100%;max-height:100%;
+    display:block;
+    user-select:none;-webkit-user-drag:none;
+    transform-origin:center center;
+    transform:translate3d(0,0,0) scale(1);
+    transition:transform .12s cubic-bezier(.2,.7,.1,1);
+    will-change:transform;
+    border:2px solid var(--ink);
+    background:var(--bg);
+    box-shadow:0 30px 80px rgba(0,0,0,.6), 8px 8px 0 var(--green);
+  }
+  .lightbox-stage.is-dragging .lightbox-img,
+  .lightbox-stage.is-dragging .lightbox-video{transition:none}
+  .lightbox-img{cursor:zoom-in}
+  .lightbox-stage.zoomed .lightbox-img{cursor:zoom-out}
+  .lightbox-video{cursor:default}
+  /* Toolbar (top) */
+  .lightbox-toolbar{
+    position:absolute;top:0;left:0;right:0;z-index:3;
+    display:flex;align-items:center;gap:10px;
+    padding:11px 16px;
+    border-bottom:2px solid var(--ink);
+    background:var(--bg-2);
+    font-family:var(--pixel);font-size:11px;letter-spacing:0;
+  }
+  .lightbox-toolbar .tag{
+    background:var(--green);color:var(--bg);
+    padding:4px 9px;
+  }
+  .lightbox-toolbar .zoom-label{
+    color:var(--green);font-family:var(--pixel);font-size:13px;
+    min-width:68px;letter-spacing:.04em;
+  }
+  .lightbox-toolbar .zoom-label .pct{color:var(--ink-dim);font-size:10px;margin-left:1px}
+  .lightbox-toolbar .rule{
+    flex:1;height:6px;
+    background-image:repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 12px);
+    opacity:.45;
+  }
+  .lightbox-btn{
+    font-family:var(--pixel);font-size:11px;letter-spacing:.04em;
+    color:var(--ink);background:var(--bg);
+    border:2px solid var(--ink);
+    padding:6px 12px;cursor:pointer;
+    transition:transform .12s, box-shadow .12s, background .12s, color .12s;
+  }
+  .lightbox-btn:hover{
+    background:var(--green);color:var(--bg);
+    transform:translate(-1px,-1px);
+    box-shadow:3px 3px 0 var(--green);
+  }
+  .lightbox-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--green)}
+  .lightbox-close{
+    font-family:var(--pixel);font-size:11px;
+    color:var(--ink);background:var(--bg);
+    border:2px solid var(--ink);
+    padding:6px 12px;cursor:pointer;margin-left:6px;
+    transition:background .12s, color .12s, border-color .12s;
+  }
+  .lightbox-close:hover{background:var(--red,#d63a2f);color:var(--ink);border-color:var(--red,#d63a2f)}
+  /* Hint strip (bottom) */
+  .lightbox-hint{
+    position:absolute;bottom:0;left:0;right:0;z-index:3;
+    display:flex;align-items:center;gap:10px;
+    padding:11px 16px;
+    border-top:2px solid var(--ink);
+    background:var(--bg-2);
+    font-family:var(--mono);font-size:10px;
+    color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;
+  }
+  .lightbox-hint .key{
+    background:var(--bg);color:var(--ink);
+    border:1px solid var(--ink-mute);
+    padding:2px 6px;font-family:var(--pixel);font-size:9px;letter-spacing:0;
+  }
+  @media (max-width:700px){
+    .lightbox-stage{inset:50px 8px 38px 8px}
+    .lightbox-toolbar{padding:8px 10px;gap:6px;flex-wrap:wrap}
+    .lightbox-toolbar .rule{display:none}
+    .lightbox-toolbar .zoom-label{min-width:56px;font-size:11px}
+    .lightbox-hint{padding:8px 10px;font-size:9px;gap:6px;justify-content:center}
+    .lightbox-img,.lightbox-video{box-shadow:0 20px 50px rgba(0,0,0,.6), 5px 5px 0 var(--green)}
   }
   @media (prefers-reduced-motion: reduce){
+    .lightbox-img,.lightbox-video{transition:none}
     .loader-log{text-shadow:none}
     .loader-bar .fill{transition:none}
   }
@@ -748,25 +804,16 @@
 </head>
 <body class="loading">
 
-<!-- ============ BOOT LOADER ============ -->
+<!-- ============ LOADING SCREEN ============ -->
 <div id="loader" class="loader" role="status" aria-live="polite" aria-label="Loading portfolio">
   <div class="loader-frame">
-    <div class="loader-head">
-      <span class="tag">[BOOT_SEQ]</span>
-      <span class="name">LUKA GRUEV / SELECTED WORK</span>
-      <span class="ts" id="boot-ts">—:—:—</span>
-    </div>
-    <div class="loader-rule"></div>
-    <pre class="loader-log" id="boot-log"></pre>
-    <div class="loader-progress">
-      <span class="pct" id="boot-pct">000</span>
-      <span class="pct-label">%</span>
-      <div class="loader-bar"><div class="fill" id="boot-bar"></div></div>
-      <span class="status" id="boot-status">INIT</span>
-    </div>
-    <div class="loader-blink" id="boot-ready">
-      <span class="cursor"></span> READY · CLICK OR PRESS ANY KEY TO ENTER
-    </div>
+    <p class="loader-title"> LUKA GRUEV <span class="dim"></p>
+    <div class="loader-bar"><div class="fill" id="boot-bar"></div></div>
+    <p class="loader-status">
+      <span class="pct" id="boot-pct">000%</span>
+      <span class="sep">·</span>
+      <span id="boot-status">LOADING</span>
+    </p>
   </div>
 </div>
 
@@ -1467,158 +1514,63 @@
 </footer>
 
 <script>
-  // === Boot loader ===
-  // Plays a terminal-style boot sequence on first paint. Lines type out with
-  // jittered delays for a real-keyboard feel, the progress bar ramps in sync,
-  // and the live clock in the header advances each frame. Once the boot
-  // sequence finishes AND window 'load' has fired (everything cached + paint
-  // settled), the READY prompt appears and any click/keypress dismisses it.
-  // Auto-dismisses after a short post-ready window if the user is idle.
+  // === Loading screen ===
+  // Smoothly ramps a progress bar to 100% while the page actually loads.
+  // The bar is throttled by both real load progress (window 'load' event)
+  // and a minimum display time so it doesn't flash in/out on cached visits.
   (() => {
     const loader = document.getElementById('loader');
     if (!loader) return;
-    const log = document.getElementById('boot-log');
-    const pct = document.getElementById('boot-pct');
+    const pctEl = document.getElementById('boot-pct');
     const bar = document.getElementById('boot-bar');
-    const status = document.getElementById('boot-status');
-    const ready = document.getElementById('boot-ready');
-    const ts = document.getElementById('boot-ts');
+    const statusEl = document.getElementById('boot-status');
 
-    // Live clock in header
-    function pad(n){ return String(n).padStart(2,'0'); }
-    function tick(){
-      const d = new Date();
-      ts.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    }
-    tick();
-    const clockId = setInterval(tick, 1000);
-
-    // Boot script — short post-line delays since the gibberish typing already
-    // dominates the timing per line.
-    const lines = [
-      { text: '> initializing portfolio.system',                  status: 'INIT',     delay: 80 },
-      { text: '> mounting /assets ............... [ ok ]',        status: 'MOUNT',    delay: 60 },
-      { text: '> loading hardware.modules ....... [ ok ]',        status: 'HARDWARE', delay: 80 },
-      { text: '> loading software.stack ......... [ ok ]',        status: 'SOFTWARE', delay: 60 },
-      { text: '> indexing 12 builds ............. [ ok ]',        status: 'ARCHIVE',  delay: 60 },
-      { text: '> compiling display.glyphs ....... [ ok ]',        status: 'DISPLAY',  delay: 60 },
-      { text: '> spinning up modal.engine ....... [ ok ]',        status: 'ENGINE',   delay: 60 },
-      { text: '> calibrating green.accent ....... [ ok ]',        status: 'COLOR',    delay: 60 },
-      { text: '> all systems nominal.', cls: 'ok',                status: 'NOMINAL',  delay: 220 },
-      { text: '',                                                  delay: 40 },
-      { text: 'lukagruev@portfolio:~$ ./run --year 2026', cls: 'ink', status: 'EXEC',  delay: 200 },
+    const MIN_DURATION = 1400;      // ms — minimum bar travel time
+    const stages = [
+      { at: 25,  label: 'INITIALIZING' },
+      { at: 55,  label: 'LOADING ASSETS' },
+      { at: 85,  label: 'COMPILING' },
+      { at: 100, label: 'READY' },
     ];
 
-    let idx = 0;
     let progress = 0;
-    let bootDone = false;
     let pageLoaded = document.readyState === 'complete';
+    const start = performance.now();
 
-    // Printable ASCII pool excluding space (so char positions stay rectangular).
-    const GLYPHS = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
-    const randomGlyph = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
-
-    // Reveals one line with a per-char ASCII-shuffle "decode" effect:
-    // every position cycles random glyphs each frame until it locks left→right.
-    // Spaces lock immediately so the line's word-shape is legible during the
-    // shuffle. Resolves once every char has settled to its real value.
-    function typeGibberish(text, cls){
-      return new Promise((resolve) => {
-        const span = document.createElement('span');
-        if (cls) span.className = cls;
-        log.appendChild(span);
-        if (!text){ span.textContent = '\n'; resolve(); return; }
-
-        const len = text.length;
-        const locked = new Array(len).fill(false);
-        for (let i = 0; i < len; i++) if (text[i] === ' ') locked[i] = true;
-
-        const lockMs = 9;       // ms between locking each next char
-        const t0 = performance.now();
-        let lastLockedCount = 0;
-
-        function step(now){
-          const target = Math.floor((now - t0) / lockMs);
-          // Lock characters left→right up to the elapsed-time target
-          let lockedCount = lastLockedCount;
-          for (let i = 0; i < len && lockedCount < target; i++){
-            if (!locked[i]){ locked[i] = true; lockedCount++; }
-          }
-          lastLockedCount = lockedCount;
-
-          // Build the visible string: locked chars are real, the rest shuffle
-          let s = '';
-          let unlocked = 0;
-          for (let i = 0; i < len; i++){
-            if (locked[i]) s += text[i];
-            else { s += randomGlyph(); unlocked++; }
-          }
-          span.textContent = s + '\n';
-
-          if (unlocked > 0) requestAnimationFrame(step);
-          else resolve();
-        }
-        requestAnimationFrame(step);
-      });
-    }
-
-    function rampTo(target){
-      const start = progress;
-      const t0 = performance.now();
-      const dur = 280;
-      function step(now){
-        const k = Math.min(1, (now - t0) / dur);
-        progress = start + (target - start) * k;
-        pct.textContent = String(Math.floor(progress)).padStart(3, '0');
-        bar.style.width = progress + '%';
-        if (k < 1) requestAnimationFrame(step);
+    function setProgress(p){
+      progress = Math.max(0, Math.min(100, p));
+      pctEl.textContent = String(Math.floor(progress)).padStart(3, '0') + '%';
+      bar.style.width = progress + '%';
+      // Pick the latest stage label whose threshold we've passed.
+      for (let i = stages.length - 1; i >= 0; i--){
+        if (progress >= stages[i].at){ statusEl.textContent = stages[i].label; break; }
       }
-      requestAnimationFrame(step);
     }
 
-    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-    async function runBoot(){
-      while (idx < lines.length){
-        const line = lines[idx++];
-        if (line.status) status.textContent = line.status;
-        await typeGibberish(line.text, line.cls || '');
-        rampTo((idx / lines.length) * 100);
-        if (line.delay) await sleep(line.delay);
-      }
-      bootDone = true;
-      rampTo(100);
-      status.textContent = 'READY';
-      tryFinish();
-    }
-
-    function tryFinish(){
-      if (!bootDone || !pageLoaded) return;
-      ready.classList.add('show');
-      // Auto-dismiss after a moment so the page reveals itself even if
-      // the visitor doesn't click. They can also press any key/click sooner.
-      setTimeout(dismiss, 1400);
+    // Drive the bar with rAF. Targets 90% by MIN_DURATION; the last 10%
+    // closes only after window.load has fired so the bar never lies.
+    function frame(now){
+      const t = (now - start) / MIN_DURATION;
+      const ceiling = pageLoaded ? 100 : 90;
+      const eased = ceiling * (1 - Math.pow(1 - Math.min(1, t), 2));
+      setProgress(Math.max(progress, eased));
+      if (progress < 100) requestAnimationFrame(frame);
+      else setTimeout(dismiss, 350);
     }
 
     let dismissed = false;
     function dismiss(){
       if (dismissed) return;
       dismissed = true;
-      clearInterval(clockId);
       loader.classList.add('done');
       document.body.classList.remove('loading');
-      // Remove from DOM after the fade completes so it doesn't trap focus.
-      setTimeout(() => loader.remove(), 650);
+      setTimeout(() => loader.remove(), 550);
     }
-    document.addEventListener('click', () => { if (ready.classList.contains('show')) dismiss(); });
-    document.addEventListener('keydown', () => { if (ready.classList.contains('show')) dismiss(); });
 
     if (!pageLoaded){
-      window.addEventListener('load', () => { pageLoaded = true; tryFinish(); }, { once: true });
+      window.addEventListener('load', () => { pageLoaded = true; }, { once: true });
     }
-
-    // Kick off
-    runBoot();
+    requestAnimationFrame(frame);
   })();
 
   // === Showcase step slideshow ===
@@ -1864,7 +1816,222 @@
       document.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
     }
   })();
+
+  // === Media lightbox ===
+  // Click any <img> or <video> on the page to open it full-screen with
+  // wheel/pinch/click-toggle zoom and drag-to-pan. Esc, [×], or backdrop
+  // closes. Showcase slides whose <a> wraps an <img> still open the cover
+  // in the lightbox (since the project-modal handler isn't wired in this
+  // standalone build).
+  (() => {
+    const lb = document.getElementById('lightbox');
+    if (!lb) return;
+    const stage = document.getElementById('lb-stage');
+    const img = document.getElementById('lb-img');
+    const video = document.getElementById('lb-video');
+    const zoomReadout = document.getElementById('lb-zoom');
+
+    const MIN_SCALE = 0.5;
+    const MAX_SCALE = 8;
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+    let media = null;
+    let scale = 1, tx = 0, ty = 0;
+
+    function applyTransform(animate){
+      if (!media) return;
+      media.style.transition = animate ? '' : 'none';
+      media.style.transform = `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) scale(${scale})`;
+      if (zoomReadout) zoomReadout.textContent = Math.round(scale * 100);
+      stage.classList.toggle('zoomed', scale > 1.01);
+    }
+
+    function reset(animate = true){ scale = 1; tx = 0; ty = 0; applyTransform(animate); }
+
+    function zoomAt(factor, cx, cy, animate = true){
+      const next = clamp(scale * factor, MIN_SCALE, MAX_SCALE);
+      if (Math.abs(next - scale) < 0.0001) return;
+      // Zoom around the cursor: keep the point under (cx,cy) stationary in viewport coords.
+      if (cx != null && cy != null && media){
+        const r = media.getBoundingClientRect();
+        const ox = cx - (r.left + r.width / 2);
+        const oy = cy - (r.top + r.height / 2);
+        tx += ox * (1 - next / scale);
+        ty += oy * (1 - next / scale);
+      }
+      scale = next;
+      applyTransform(animate);
+    }
+
+    function open(src, kind, alt){
+      if (kind === 'video'){
+        img.hidden = true; img.src = '';
+        video.hidden = false;
+        // Pause every other video on the page so audio doesn't double up.
+        document.querySelectorAll('video').forEach(v => { if (v !== video) try { v.pause(); } catch (_){} });
+        video.src = src;
+        video.currentTime = 0;
+        video.play().catch(() => {}); // browsers may block; controls are visible anyway
+        media = video;
+      } else {
+        video.hidden = true; try { video.pause(); } catch (_) {}
+        video.removeAttribute('src');
+        img.hidden = false;
+        img.src = src;
+        img.alt = alt || '';
+        media = img;
+      }
+      reset(false);
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-open');
+    }
+
+    function close(){
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lightbox-open');
+      try { video.pause(); } catch (_){}
+      video.removeAttribute('src'); video.load();
+      img.removeAttribute('src');
+      media = null;
+    }
+
+    // Global click: open the lightbox for any clicked img/video
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('#lightbox')) return;     // clicks inside lightbox handled below
+      // For elements wrapped by a clickable ancestor (showcase slides etc.),
+      // find the inner media element and open that.
+      const wrapper = e.target.closest('[data-project-trigger], a.slide');
+      let m;
+      if (wrapper) m = wrapper.querySelector('img, video');
+      if (!m) m = e.target.closest('img, video');
+      if (!m) return;
+      // Skip decorative pixel icons used as glyphs (svg, not img/video).
+      e.preventDefault();
+      e.stopPropagation();
+      const src = m.currentSrc || m.src || (m.querySelector && m.querySelector('source') && m.querySelector('source').src);
+      if (!src) return;
+      open(src, m.tagName === 'VIDEO' ? 'video' : 'image', m.alt || m.getAttribute('aria-label') || '');
+    }, true); // capture phase so we run before any link's default
+
+    // Close handlers
+    lb.addEventListener('click', (e) => {
+      if (e.target.closest('[data-lightbox-close]')) { close(); return; }
+      // Click on the empty stage area (not on the media itself) closes.
+      if (e.target === stage) close();
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') { close(); }
+      else if (e.key === '+' || e.key === '=') { zoomAt(1.2); }
+      else if (e.key === '-' || e.key === '_') { zoomAt(1 / 1.2); }
+      else if (e.key === '0') { reset(); }
+    });
+
+    // Wheel zoom (desktop)
+    stage.addEventListener('wheel', (e) => {
+      if (!media) return;
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+      zoomAt(factor, e.clientX, e.clientY, false);
+    }, { passive: false });
+
+    // Click image to toggle 2× zoom (centered on click point)
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (scale > 1.01) reset();
+      else zoomAt(2, e.clientX, e.clientY);
+    });
+
+    // Drag to pan (mouse + touch via Pointer Events)
+    let drag = null;
+    stage.addEventListener('pointerdown', (e) => {
+      if (e.target !== media) return;
+      // Don't hijack video controls drags; only pan when zoomed in.
+      if (media.tagName === 'VIDEO' && scale <= 1.01) return;
+      drag = { x: e.clientX, y: e.clientY, tx0: tx, ty0: ty, id: e.pointerId };
+      try { stage.setPointerCapture(e.pointerId); } catch (_){}
+      stage.classList.add('is-dragging', 'dragging');
+      e.preventDefault();
+    });
+    stage.addEventListener('pointermove', (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      tx = drag.tx0 + (e.clientX - drag.x);
+      ty = drag.ty0 + (e.clientY - drag.y);
+      applyTransform(false);
+    });
+    function endDrag(e){
+      if (!drag) return;
+      try { stage.releasePointerCapture(drag.id); } catch (_){}
+      drag = null;
+      stage.classList.remove('is-dragging', 'dragging');
+    }
+    stage.addEventListener('pointerup', endDrag);
+    stage.addEventListener('pointercancel', endDrag);
+
+    // Pinch zoom (touch)
+    let pinch = null;
+    stage.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2){
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinch = { dist: Math.hypot(dx, dy), scale0: scale };
+      }
+    }, { passive: true });
+    stage.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2 && pinch){
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.hypot(dx, dy);
+        const ratio = dist / pinch.dist;
+        const next = clamp(pinch.scale0 * ratio, MIN_SCALE, MAX_SCALE);
+        scale = next;
+        applyTransform(false);
+        e.preventDefault();
+      }
+    }, { passive: false });
+    stage.addEventListener('touchend', (e) => {
+      if (e.touches.length < 2) pinch = null;
+    });
+
+    // Toolbar buttons
+    lb.querySelectorAll('.lightbox-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const z = btn.dataset.zoom;
+        if (z === '+1') zoomAt(1.25);
+        else if (z === '-1') zoomAt(1 / 1.25);
+        else if (z === '0') reset();
+      });
+    });
+  })();
 </script>
+
+<!-- ============ MEDIA LIGHTBOX ============ -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Media viewer">
+  <header class="lightbox-toolbar">
+    <span class="tag">[VIEW]</span>
+    <span class="zoom-label"><span id="lb-zoom">100</span><span class="pct">%</span></span>
+    <span class="rule"></span>
+    <button class="lightbox-btn" data-zoom="-1" aria-label="Zoom out" type="button">−</button>
+    <button class="lightbox-btn" data-zoom="0" aria-label="Reset zoom" type="button">FIT</button>
+    <button class="lightbox-btn" data-zoom="+1" aria-label="Zoom in" type="button">+</button>
+    <button class="lightbox-close" data-lightbox-close aria-label="Close viewer" type="button">[ × ]</button>
+  </header>
+  <div class="lightbox-stage" id="lb-stage">
+    <img class="lightbox-img" id="lb-img" alt="" hidden>
+    <video class="lightbox-video" id="lb-video" controls playsinline preload="metadata" hidden></video>
+  </div>
+  <footer class="lightbox-hint">
+    <span class="key">SCROLL</span> ZOOM
+    <span class="key">DRAG</span> PAN
+    <span class="key">CLICK</span> 2× TOGGLE
+    <span class="key">ESC</span> CLOSE
+  </footer>
+</div>
 
 </body>
 </html>
