@@ -317,14 +317,11 @@
     .gallery-grid figure.wide{grid-column:span 2}
   }
 
-  /* ============ TYPING ANIMATION ============ */
+  /* ============ TEXT SHUFFLE REVEAL ============ */
+  /* The .type marker only reserves space; the JS shuffles characters in
+     place when the element scrolls into view. No cursor — the shuffle
+     motion itself signals "still resolving". */
   .type{position:relative}
-  .type.typing::after{
-    content:'';display:inline-block;
-    width:9px;height:1.05em;background:var(--green);
-    margin-left:3px;vertical-align:-3px;
-    animation:blink 0.7s steps(2) infinite;
-  }
 
   /* ============ FADE-UP REVEAL (every other element) ============ */
   .fx{
@@ -335,7 +332,6 @@
   .fx.in{opacity:1;transform:none}
   @media (prefers-reduced-motion: reduce){
     .fx{opacity:1;transform:none;transition:none}
-    .type.typing::after{animation:none}
   }
 
   /* ============ MORE PROJECTS ============ */
@@ -1497,19 +1493,20 @@
     tick();
     const clockId = setInterval(tick, 1000);
 
-    // Boot script — varied delays + ascii so it doesn't feel mechanical
+    // Boot script — short post-line delays since the gibberish typing already
+    // dominates the timing per line.
     const lines = [
-      { text: '> initializing portfolio.system',                  status: 'INIT',     delay: 220 },
-      { text: '> mounting /assets ............... [ ok ]',        status: 'MOUNT',    delay: 180 },
-      { text: '> loading hardware.modules ....... [ ok ]',        status: 'HARDWARE', delay: 260 },
-      { text: '> loading software.stack ......... [ ok ]',        status: 'SOFTWARE', delay: 220 },
-      { text: '> indexing 12 builds ............. [ ok ]',        status: 'ARCHIVE',  delay: 220 },
-      { text: '> compiling display.glyphs ....... [ ok ]',        status: 'DISPLAY',  delay: 200 },
-      { text: '> spinning up modal.engine ....... [ ok ]',        status: 'ENGINE',   delay: 200 },
-      { text: '> calibrating green.accent ....... [ ok ]',        status: 'COLOR',    delay: 180 },
-      { text: '> all systems nominal.', cls: 'ok',                status: 'NOMINAL',  delay: 320 },
-      { text: '',                                                  delay: 80 },
-      { text: 'lukagruev@portfolio:~$ ./run --year 2026', cls: 'ink', status: 'EXEC',  delay: 240 },
+      { text: '> initializing portfolio.system',                  status: 'INIT',     delay: 80 },
+      { text: '> mounting /assets ............... [ ok ]',        status: 'MOUNT',    delay: 60 },
+      { text: '> loading hardware.modules ....... [ ok ]',        status: 'HARDWARE', delay: 80 },
+      { text: '> loading software.stack ......... [ ok ]',        status: 'SOFTWARE', delay: 60 },
+      { text: '> indexing 12 builds ............. [ ok ]',        status: 'ARCHIVE',  delay: 60 },
+      { text: '> compiling display.glyphs ....... [ ok ]',        status: 'DISPLAY',  delay: 60 },
+      { text: '> spinning up modal.engine ....... [ ok ]',        status: 'ENGINE',   delay: 60 },
+      { text: '> calibrating green.accent ....... [ ok ]',        status: 'COLOR',    delay: 60 },
+      { text: '> all systems nominal.', cls: 'ok',                status: 'NOMINAL',  delay: 220 },
+      { text: '',                                                  delay: 40 },
+      { text: 'lukagruev@portfolio:~$ ./run --year 2026', cls: 'ink', status: 'EXEC',  delay: 200 },
     ];
 
     let idx = 0;
@@ -1517,11 +1514,52 @@
     let bootDone = false;
     let pageLoaded = document.readyState === 'complete';
 
-    function appendLine(text, cls){
-      const span = document.createElement('span');
-      if (cls) span.className = cls;
-      span.textContent = text + '\n';
-      log.appendChild(span);
+    // Printable ASCII pool excluding space (so char positions stay rectangular).
+    const GLYPHS = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
+    const randomGlyph = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
+
+    // Reveals one line with a per-char ASCII-shuffle "decode" effect:
+    // every position cycles random glyphs each frame until it locks left→right.
+    // Spaces lock immediately so the line's word-shape is legible during the
+    // shuffle. Resolves once every char has settled to its real value.
+    function typeGibberish(text, cls){
+      return new Promise((resolve) => {
+        const span = document.createElement('span');
+        if (cls) span.className = cls;
+        log.appendChild(span);
+        if (!text){ span.textContent = '\n'; resolve(); return; }
+
+        const len = text.length;
+        const locked = new Array(len).fill(false);
+        for (let i = 0; i < len; i++) if (text[i] === ' ') locked[i] = true;
+
+        const lockMs = 9;       // ms between locking each next char
+        const t0 = performance.now();
+        let lastLockedCount = 0;
+
+        function step(now){
+          const target = Math.floor((now - t0) / lockMs);
+          // Lock characters left→right up to the elapsed-time target
+          let lockedCount = lastLockedCount;
+          for (let i = 0; i < len && lockedCount < target; i++){
+            if (!locked[i]){ locked[i] = true; lockedCount++; }
+          }
+          lastLockedCount = lockedCount;
+
+          // Build the visible string: locked chars are real, the rest shuffle
+          let s = '';
+          let unlocked = 0;
+          for (let i = 0; i < len; i++){
+            if (locked[i]) s += text[i];
+            else { s += randomGlyph(); unlocked++; }
+          }
+          span.textContent = s + '\n';
+
+          if (unlocked > 0) requestAnimationFrame(step);
+          else resolve();
+        }
+        requestAnimationFrame(step);
+      });
     }
 
     function rampTo(target){
@@ -1538,19 +1576,20 @@
       requestAnimationFrame(step);
     }
 
-    function next(){
-      if (idx >= lines.length){
-        bootDone = true;
-        rampTo(100);
-        status.textContent = 'READY';
-        tryFinish();
-        return;
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    async function runBoot(){
+      while (idx < lines.length){
+        const line = lines[idx++];
+        if (line.status) status.textContent = line.status;
+        await typeGibberish(line.text, line.cls || '');
+        rampTo((idx / lines.length) * 100);
+        if (line.delay) await sleep(line.delay);
       }
-      const line = lines[idx++];
-      appendLine(line.text, line.cls || '');
-      if (line.status) status.textContent = line.status;
-      rampTo((idx / lines.length) * 100);
-      setTimeout(next, line.delay);
+      bootDone = true;
+      rampTo(100);
+      status.textContent = 'READY';
+      tryFinish();
     }
 
     function tryFinish(){
@@ -1574,15 +1613,12 @@
     document.addEventListener('click', () => { if (ready.classList.contains('show')) dismiss(); });
     document.addEventListener('keydown', () => { if (ready.classList.contains('show')) dismiss(); });
 
-    if (pageLoaded){
-      // page is already cached; still want the boot to play, but we know
-      // the underlying site is ready whenever boot finishes.
-    } else {
+    if (!pageLoaded){
       window.addEventListener('load', () => { pageLoaded = true; tryFinish(); }, { once: true });
     }
 
     // Kick off
-    next();
+    runBoot();
   })();
 
   // === Showcase step slideshow ===
@@ -1690,23 +1726,59 @@
       el.textContent = '';
     });
 
-    const SPEED = 5;  // ms per character — fast
+    // Same printable-ASCII pool the boot loader uses, minus space.
+    const SHUFFLE_GLYPHS = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
 
+    // Reveal a .type element with the same per-character shuffle effect as the
+    // boot loader: every position cycles random glyphs each frame and locks
+    // its true value left→right. Spaces/newlines are pre-locked so the line's
+    // word-shape stays legible during the chaos.
+    //
+    // lockMs scales with text length so short headlines get a slow, visible
+    // shuffle and long paragraphs auto-compress to stay under ~1s total.
     const typeOne = (el) => {
       const text = el.dataset.text || '';
-      el.classList.add('typing');
-      let i = 0;
-      const tick = () => {
-        i++;
-        el.textContent = text.slice(0, i);
-        if (i >= text.length){
-          el.classList.remove('typing');
-          el.style.minHeight = '';
-          return;
+      const len = text.length;
+      if (!len){ el.style.minHeight = ''; return; }
+
+      const totalMs = Math.min(950, Math.max(280, len * 18));
+      const lockMs = Math.max(1.5, totalMs / len);
+
+      const locked = new Array(len).fill(false);
+      for (let i = 0; i < len; i++){
+        const c = text[i];
+        if (c === ' ' || c === '\n' || c === '\t') locked[i] = true;
+      }
+
+      // Synchronous first fill — avoids the 1-frame empty flash between
+      // textContent='' (set in pre-measure) and the first rAF tick.
+      const renderFrame = () => {
+        let s = '';
+        let unlocked = 0;
+        for (let i = 0; i < len; i++){
+          if (locked[i]) s += text[i];
+          else { s += SHUFFLE_GLYPHS[(Math.random() * SHUFFLE_GLYPHS.length) | 0]; unlocked++; }
         }
-        setTimeout(tick, SPEED);
+        el.textContent = s;
+        return unlocked;
       };
-      tick();
+      renderFrame();
+
+      const t0 = performance.now();
+      let lastLockedCount = 0;
+      function step(now){
+        const target = Math.floor((now - t0) / lockMs);
+        let lockedCount = lastLockedCount;
+        for (let i = 0; i < len && lockedCount < target; i++){
+          if (!locked[i]){ locked[i] = true; lockedCount++; }
+        }
+        lastLockedCount = lockedCount;
+
+        const unlocked = renderFrame();
+        if (unlocked > 0) requestAnimationFrame(step);
+        else el.style.minHeight = '';
+      }
+      requestAnimationFrame(step);
     };
 
     // 4) Single observer drives both typing AND fading. Visible siblings cascade.
