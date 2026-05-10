@@ -282,7 +282,7 @@
     width:100%;height:100%;object-fit:cover;display:block;
     border:1px solid var(--ink);
     filter:contrast(1.05) brightness(1.02);
-    cursor:default;
+    cursor:zoom-in;
   }
   .gallery-grid figure.huge{grid-column:span 2;grid-row:span 2}
   .gallery-grid figure.wide{grid-column:span 2}
@@ -705,9 +705,10 @@
     z-index:1;
   }
   .lightbox-stage{
-    position:absolute;inset:54px 16px 44px 16px;z-index:2;
+    position:absolute;inset:0;z-index:2;
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
+    padding:24px;
     cursor:grab;
   }
   .lightbox-stage.dragging{cursor:grabbing}
@@ -723,76 +724,15 @@
     background:var(--bg);
     box-shadow:0 30px 80px rgba(0,0,0,.6), 8px 8px 0 var(--green);
   }
+  /* HTML `hidden` attr otherwise overridden by display:block above */
+  .lightbox-img[hidden],.lightbox-video[hidden]{display:none}
   .lightbox-stage.is-dragging .lightbox-img,
   .lightbox-stage.is-dragging .lightbox-video{transition:none}
   .lightbox-img{cursor:zoom-in}
   .lightbox-stage.zoomed .lightbox-img{cursor:zoom-out}
   .lightbox-video{cursor:default}
-  /* Toolbar (top) */
-  .lightbox-toolbar{
-    position:absolute;top:0;left:0;right:0;z-index:3;
-    display:flex;align-items:center;gap:10px;
-    padding:11px 16px;
-    border-bottom:2px solid var(--ink);
-    background:var(--bg-2);
-    font-family:var(--pixel);font-size:11px;letter-spacing:0;
-  }
-  .lightbox-toolbar .tag{
-    background:var(--green);color:var(--bg);
-    padding:4px 9px;
-  }
-  .lightbox-toolbar .zoom-label{
-    color:var(--green);font-family:var(--pixel);font-size:13px;
-    min-width:68px;letter-spacing:.04em;
-  }
-  .lightbox-toolbar .zoom-label .pct{color:var(--ink-dim);font-size:10px;margin-left:1px}
-  .lightbox-toolbar .rule{
-    flex:1;height:6px;
-    background-image:repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 12px);
-    opacity:.45;
-  }
-  .lightbox-btn{
-    font-family:var(--pixel);font-size:11px;letter-spacing:.04em;
-    color:var(--ink);background:var(--bg);
-    border:2px solid var(--ink);
-    padding:6px 12px;cursor:pointer;
-    transition:transform .12s, box-shadow .12s, background .12s, color .12s;
-  }
-  .lightbox-btn:hover{
-    background:var(--green);color:var(--bg);
-    transform:translate(-1px,-1px);
-    box-shadow:3px 3px 0 var(--green);
-  }
-  .lightbox-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--green)}
-  .lightbox-close{
-    font-family:var(--pixel);font-size:11px;
-    color:var(--ink);background:var(--bg);
-    border:2px solid var(--ink);
-    padding:6px 12px;cursor:pointer;margin-left:6px;
-    transition:background .12s, color .12s, border-color .12s;
-  }
-  .lightbox-close:hover{background:var(--red,#d63a2f);color:var(--ink);border-color:var(--red,#d63a2f)}
-  /* Hint strip (bottom) */
-  .lightbox-hint{
-    position:absolute;bottom:0;left:0;right:0;z-index:3;
-    display:flex;align-items:center;gap:10px;
-    padding:11px 16px;
-    border-top:2px solid var(--ink);
-    background:var(--bg-2);
-    font-family:var(--mono);font-size:10px;
-    color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;
-  }
-  .lightbox-hint .key{
-    background:var(--bg);color:var(--ink);
-    border:1px solid var(--ink-mute);
-    padding:2px 6px;font-family:var(--pixel);font-size:9px;letter-spacing:0;
-  }
   @media (max-width:700px){
-    .lightbox-stage{inset:50px 8px 38px 8px}
-    .lightbox-toolbar{padding:8px 10px;gap:6px;flex-wrap:wrap}
-    .lightbox-toolbar .rule{display:none}
-    .lightbox-toolbar .zoom-label{min-width:56px;font-size:11px}
-    .lightbox-hint{padding:8px 10px;font-size:9px;gap:6px;justify-content:center}
+    .lightbox-stage{padding:12px}
     .lightbox-img,.lightbox-video{box-shadow:0 20px 50px rgba(0,0,0,.6), 5px 5px 0 var(--green)}
   }
   @media (prefers-reduced-motion: reduce){
@@ -1509,9 +1449,17 @@
         </div>
       </div>
     </div>
-  
+
   </div>
 </footer>
+
+<!-- ============ MEDIA LIGHTBOX ============ -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Media viewer">
+  <div class="lightbox-stage" id="lb-stage">
+    <img class="lightbox-img" id="lb-img" alt="" hidden>
+    <video class="lightbox-video" id="lb-video" controls playsinline preload="metadata" hidden></video>
+  </div>
+</div>
 
 <script>
   // === Loading screen ===
@@ -1829,7 +1777,6 @@
     const stage = document.getElementById('lb-stage');
     const img = document.getElementById('lb-img');
     const video = document.getElementById('lb-video');
-    const zoomReadout = document.getElementById('lb-zoom');
 
     const MIN_SCALE = 0.5;
     const MAX_SCALE = 8;
@@ -1842,7 +1789,6 @@
       if (!media) return;
       media.style.transition = animate ? '' : 'none';
       media.style.transform = `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) scale(${scale})`;
-      if (zoomReadout) zoomReadout.textContent = Math.round(scale * 100);
       stage.classList.toggle('zoomed', scale > 1.01);
     }
 
@@ -1915,10 +1861,8 @@
       open(src, m.tagName === 'VIDEO' ? 'video' : 'image', m.alt || m.getAttribute('aria-label') || '');
     }, true); // capture phase so we run before any link's default
 
-    // Close handlers
+    // Close on backdrop click — clicking empty stage area outside the media.
     lb.addEventListener('click', (e) => {
-      if (e.target.closest('[data-lightbox-close]')) { close(); return; }
-      // Click on the empty stage area (not on the media itself) closes.
       if (e.target === stage) close();
     });
 
@@ -1996,42 +1940,8 @@
     stage.addEventListener('touchend', (e) => {
       if (e.touches.length < 2) pinch = null;
     });
-
-    // Toolbar buttons
-    lb.querySelectorAll('.lightbox-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const z = btn.dataset.zoom;
-        if (z === '+1') zoomAt(1.25);
-        else if (z === '-1') zoomAt(1 / 1.25);
-        else if (z === '0') reset();
-      });
-    });
   })();
 </script>
-
-<!-- ============ MEDIA LIGHTBOX ============ -->
-<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Media viewer">
-  <header class="lightbox-toolbar">
-    <span class="tag">[VIEW]</span>
-    <span class="zoom-label"><span id="lb-zoom">100</span><span class="pct">%</span></span>
-    <span class="rule"></span>
-    <button class="lightbox-btn" data-zoom="-1" aria-label="Zoom out" type="button">−</button>
-    <button class="lightbox-btn" data-zoom="0" aria-label="Reset zoom" type="button">FIT</button>
-    <button class="lightbox-btn" data-zoom="+1" aria-label="Zoom in" type="button">+</button>
-    <button class="lightbox-close" data-lightbox-close aria-label="Close viewer" type="button">[ × ]</button>
-  </header>
-  <div class="lightbox-stage" id="lb-stage">
-    <img class="lightbox-img" id="lb-img" alt="" hidden>
-    <video class="lightbox-video" id="lb-video" controls playsinline preload="metadata" hidden></video>
-  </div>
-  <footer class="lightbox-hint">
-    <span class="key">SCROLL</span> ZOOM
-    <span class="key">DRAG</span> PAN
-    <span class="key">CLICK</span> 2× TOGGLE
-    <span class="key">ESC</span> CLOSE
-  </footer>
-</div>
 
 </body>
 </html>
