@@ -574,6 +574,8 @@
   .foot-grid{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:start;margin-bottom:80px}
   .foot-icon{width:96px;height:96px;background:var(--bg);border:3px solid var(--ink);display:grid;place-items:center;color:var(--ink);box-shadow:8px 8px 0 var(--green);flex-shrink:0}
   .foot-icon .px{width:56px;height:56px}
+  .foot-pfp{width:140px;height:140px;overflow:hidden;padding:0}
+  .foot-pfp img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.05) brightness(1.02)}
   .foot h2{
     font-family:var(--pixel);font-weight:700;
     font-size:clamp(48px,10vw,140px);line-height:.95;
@@ -1330,10 +1332,9 @@
   <div class="showcase-sticky">
     <div class="showcase-title">
       <h2>12+ HIGH LEVEL PROJECTS</h2>
-      <p>All designed by me</p>
+      <p>All designed by me!</p>
     </div>
     <header class="showcase-head">
-      <span class="label"><svg class="px" style="width:14px;height:14px"><use href="#i-chip"/></svg> // THE SHELF · 12 BUILDS</span>
       <span class="rule"></span>
       <span class="pages"><span class="cur">01</span>/12</span>
     </header>
@@ -1479,7 +1480,7 @@
 <footer class="foot" id="contact">
   <div class="wrap">
     <div class="foot-grid">
-      <div class="foot-icon"><svg class="px"><use href="#i-mail"/></svg></div>
+      <div class="foot-icon foot-pfp"><img src="assets/me/PFP.jpg" alt="Luka Gruev"></div>
       <div>
         <h2>Contact<span class="accent">Me!</span></h2>
         <p class="type">If you have any jobs, tedious tasks, projects, or more, let me know! I'm eager to gain engineering experience and learn more. I am a quick learner and a hard worker. I would be grateful for a short meeting if you have any questions! </p>
