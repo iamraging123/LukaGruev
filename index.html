@@ -399,14 +399,14 @@
     border-bottom:2px solid var(--ink);
   }
   .showcase-sticky{
-    position:sticky;top:0;
+    position:sticky;top:0;z-index:50;
     height:100vh;
     display:grid;grid-template-rows:auto auto 1fr auto;
     overflow:hidden;
     background:var(--bg-2);
   }
   .showcase-title{
-    display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 18px;
+    display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 18px;
     padding:22px 28px 18px;
     border-bottom:2px solid var(--ink);
     background:var(--bg);
@@ -415,17 +415,13 @@
     font-family:var(--pixel);font-weight:700;
     font-size:clamp(22px,3.4vw,40px);
     line-height:1;letter-spacing:0;
-    color:var(--ink);
+    color:#ffffff;
     margin:0;
-  }
-  .showcase-title h2 .accent{
-    color:var(--bg);background:var(--green);
-    padding:2px 8px 0;display:inline-block;
   }
   .showcase-title p{
     margin:0;
-    font-family:var(--mono);font-size:12px;
-    color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase;
+    font-family:var(--mono);font-size:13px;
+    color:#ffffff;letter-spacing:.06em;
   }
   .showcase-head{
     display:flex;align-items:center;gap:16px;
@@ -1333,8 +1329,8 @@
 <section class="showcase" id="showcase" style="--slides:12">
   <div class="showcase-sticky">
     <div class="showcase-title">
-      <h2><span class="accent">12+</span> HIGH LEVEL PROJECTS</h2>
-      <p>// All designed by me</p>
+      <h2>12+ HIGH LEVEL PROJECTS</h2>
+      <p>All designed by me</p>
     </div>
     <header class="showcase-head">
       <span class="label"><svg class="px" style="width:14px;height:14px"><use href="#i-chip"/></svg> // THE SHELF · 12 BUILDS</span>
