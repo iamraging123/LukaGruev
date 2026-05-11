@@ -35,6 +35,18 @@
   html::-webkit-scrollbar,
   body::-webkit-scrollbar{width:0;height:0;display:none}
   body{overflow-x:clip}
+  /* Page-wide scanline texture — same pattern as the loader overlay, kept
+     pinned to the viewport so it doesn't scroll with content. pointer-events
+     none so it never blocks clicks; z-index keeps it above content but below
+     the loader (9999) and lightbox (9000). */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1000;
+    background-image:repeating-linear-gradient(
+      to bottom,
+      rgba(245,240,230,.03) 0 1px,
+      transparent 1px 3px
+    );
+  }
   a{color:inherit;text-decoration:none}
   img{display:block;max-width:100%;height:auto}
   ::selection{background:var(--green);color:var(--bg)}
@@ -389,9 +401,31 @@
   .showcase-sticky{
     position:sticky;top:0;
     height:100vh;
-    display:grid;grid-template-rows:auto 1fr auto;
+    display:grid;grid-template-rows:auto auto 1fr auto;
     overflow:hidden;
     background:var(--bg-2);
+  }
+  .showcase-title{
+    display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 18px;
+    padding:22px 28px 18px;
+    border-bottom:2px solid var(--ink);
+    background:var(--bg);
+  }
+  .showcase-title h2{
+    font-family:var(--pixel);font-weight:700;
+    font-size:clamp(22px,3.4vw,40px);
+    line-height:1;letter-spacing:0;
+    color:var(--ink);
+    margin:0;
+  }
+  .showcase-title h2 .accent{
+    color:var(--bg);background:var(--green);
+    padding:2px 8px 0;display:inline-block;
+  }
+  .showcase-title p{
+    margin:0;
+    font-family:var(--mono);font-size:12px;
+    color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase;
   }
   .showcase-head{
     display:flex;align-items:center;gap:16px;
@@ -1298,6 +1332,10 @@
 <!-- ============ SHOWCASE — sticky scroll-hijacked horizontal shelf ============ -->
 <section class="showcase" id="showcase" style="--slides:12">
   <div class="showcase-sticky">
+    <div class="showcase-title">
+      <h2><span class="accent">12+</span> HIGH LEVEL PROJECTS</h2>
+      <p>// All designed by me</p>
+    </div>
     <header class="showcase-head">
       <span class="label"><svg class="px" style="width:14px;height:14px"><use href="#i-chip"/></svg> // THE SHELF · 12 BUILDS</span>
       <span class="rule"></span>
@@ -1447,14 +1485,13 @@
     <div class="foot-grid">
       <div class="foot-icon"><svg class="px"><use href="#i-mail"/></svg></div>
       <div>
-        <h2>and now —<br>the next <span class="accent">build.</span></h2>
-        <p>After five years of building things — soldering, machining, simulating, debugging, occasionally setting something on fire — I've learned the only real shortcut is starting. The sim is never quite the rocket. The first PCB never works. None of it has stopped me yet.</p>
-        <p>I'm always excited to connect with engineers — open to volunteering, mentorship, employment opportunities, or just a chat about some of my projects. If you build things and want to talk to someone who builds things, reach out.</p>
-        <p class="s">There's always a next build. I'd love to hear what you're working on too.</p>
+        <h2>Contact<span class="accent">Me!</span></h2>
+        <p class="type">If you have any jobs, tedious tasks, projects, or more, let me know! I'm eager to gain engineering experience and learn more. I am a quick learner and a hard worker. I would be grateful for a short meeting if you have any questions! </p>
         <div class="channels">
           <a href="mailto:lukaeg@illinois.edu">lukaeg@illinois.edu</a>
           <a href="#">@luka.makesstuff <svg class="px" style="width:10px;height:10px"><use href="#i-out"/></svg></a>
           <a href="#">linkedin/luka-gruev <svg class="px" style="width:10px;height:10px"><use href="#i-out"/></svg></a>
+          <a href="#">github/luka-gruev <svg class="px" style="width:10px;height:10px"><use href="#i-out"/></svg></a>
         </div>
       </div>
     </div>
